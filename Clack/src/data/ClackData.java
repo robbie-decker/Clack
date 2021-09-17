@@ -27,16 +27,16 @@ public class ClackData {
         this("anon", CONSTANT_LISTUSERS);// <-- discuss whether this is the best constant to use
     }
     public int getType(){
-            return 0; // <-- needs to be implemented
+        return this.type;
     }
     public String getUserName(){
-        return "null"; // <-- needs to be implemented
+        return this.userName;
     }
     public Date getDate(){
-        return new Date(); // <-- needs to be implemented
+        return this.date;
     }
     public int getData(){
-        return 0; // <-- needs to be implemented
+        return 0; // <-- not sure what to do here
     }
 
 }
