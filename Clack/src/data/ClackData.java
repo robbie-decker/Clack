@@ -1,5 +1,6 @@
 package data;
 
+import java.util.Date;
 /**
  *
  * @author Chris Hickman and Robbie Decker
@@ -26,16 +27,16 @@ public class ClackData {
         this("anon", CONSTANT_LISTUSERS);// <-- discuss whether this is the best constant to use
     }
     public int getType(){
-
+            return 0; // <-- needs to be implemented
     }
     public String getUserName(){
-
+        return "null"; // <-- needs to be implemented
     }
     public Date getDate(){
-
+        return new Date(); // <-- needs to be implemented
     }
     public int getData(){
-
+        return 0; // <-- needs to be implemented
     }
 
 }
