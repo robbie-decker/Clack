@@ -1,5 +1,5 @@
 package main;
-import data.ClackData;
+import data.*;
 
 public class ClackClient {
     private String userName;
@@ -8,14 +8,24 @@ public class ClackClient {
     private boolean closeConnection;
     private ClackData dataToSendToServer;
     private ClackData dataToReceiveFromServer;
+    public static final int defaultPort = 7000;
 
-public ClackData(String userName, String hostName, int port ){
+public ClackClient(String userName, String hostName, int port ){
+    this.userName = userName;
+    this.hostName = hostName;
+    this.port = port;
+    this.closeConnection = true;
+    this.dataToSendToServer = null;
+    this.dataToReceiveFromServer = null;
 }
-public ClackData(String userName, String hostName) {
+public ClackClient(String userName, String hostName) {
+    this(userName, hostName, defaultPort);
 }
-public ClackData(String userName) {
+public ClackClient(String userName) {
+    this(userName, "localhost");
 }
-public ClackData() {
+public ClackClient() {
+    this("anon");
 }
 public void start(){}
 public void readClientData(){}
@@ -23,27 +33,23 @@ public void sendData(){}
 public void receiveData(){}
 public void printData(){}
 public String getUserName(){
-
+    return this.userName;
 }
 public String getHostName(){
-
+    return this.hostName;
 }
 public int getPort(){
-
+    return this.port;
 }
 public int hashCode(){
-
+return 0;    //     <-- needs to be implemented
 }
 public ClackClient equals(ClackClient toBeSet){
-
+return toBeSet;    //     <-- needs to be implemented
 }
 public String toString(){
-    
+return "not implemented yet";    //     <-- needs to be implemented
 }
-
-
-
-
 
 
 }
