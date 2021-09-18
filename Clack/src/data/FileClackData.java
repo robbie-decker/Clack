@@ -8,11 +8,11 @@ public class FileClackData extends ClackData  {
    public FileClackData(String userName, String fileName, int type){
         super(userName, type);
         this.fileName = fileName;
-        this.fileContents = "null";
+        this.fileContents = null;
 
     }
    public FileClackData(){
-        this("anon", "anon", 0);
+        this("anon", "anon", 0); // <-- calls super how???
         //calls super through above constructor
     }
     public void setFileName(String fileName){
@@ -21,23 +21,27 @@ public class FileClackData extends ClackData  {
     public String getFileName(){
         return this.fileName;
     }
-    public int getData(){
-        return this.getData();
-    }
+    public String getData(){ return this.fileContents;}
     public void readFileContents(){
-
-    }
+   }
     public void writeFileContents(){
+   }
 
+    public int hashCode(){
+       return this.fileName.hashCode(); //           <-- this???
     }
+    public void equals(FileClackData toBeSet){
+        this.fileContents = toBeSet.fileContents;
+        this.fileName = toBeSet.fileName;//       <-- I am confusion
 
-    //hashCode <-- say what??
-    public FileClackData equals(){
-        return new FileClackData(); // <-- implementation needed
     }
     public String toString(){
-        return "void"; // <-- implementation needed
-    }
+        return  "file name: " + this.fileName +
+                "file contents: " + this.fileContents +
+                "user name: " + this.getUserName() +
+                "type: " + this.getType() +
+                "date: " + this.getDate();
+   }
 
 
 }

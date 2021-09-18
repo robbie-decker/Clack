@@ -5,9 +5,6 @@ import data.*;
 public class TestClackData {
 
     public static void main(String[] args){
-    //ClackData testing
-    ClackData x = new ClackData("x's User", 2);
-    System.out.println( "this is x's user name: " + x.getUserName());
 
     //FileClackData testing
     ClackData x_x = new FileClackData();
