@@ -1,7 +1,17 @@
 package data;
 import data.ClackData;
 
+/**
+ *
+ *
+ * @author: Chris Hickman
+ *
+ *
+ * 
+ */
 public class FileClackData extends ClackData  {
+
+
     private String fileName;
     private String fileContents;
 
@@ -30,17 +40,24 @@ public class FileClackData extends ClackData  {
     public int hashCode(){
        return this.fileName.hashCode(); //           <-- this???
     }
-    public void equals(FileClackData toBeSet){
-        this.fileContents = toBeSet.fileContents;
-        this.fileName = toBeSet.fileName;//       <-- I am confusion
 
-    }
+
+    public boolean equals(Object other){
+       if(other instanceof FileClackData) {
+           FileClackData f2 = (FileClackData) other;
+            return super.equals(f2) &&
+                    this.fileName == f2.fileName &&
+                    this.fileContents == f2.fileContents;
+       }
+        else if (other == null) return false;
+        else return false;
+   }
     public String toString(){
-        return  "file name: " + this.fileName +
-                "file contents: " + this.fileContents +
-                "user name: " + this.getUserName() +
-                "type: " + this.getType() +
-                "date: " + this.getDate();
+        return  "file name: " + this.fileName  +
+                ", file contents: " + this.fileContents  +
+                ", user name: " + this.getUserName()  +
+                ", type: " + this.getType()  +
+                ", date: " + this.getDate();
    }
 
 

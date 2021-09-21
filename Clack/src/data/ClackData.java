@@ -37,7 +37,21 @@ abstract public class ClackData {
     public Date getDate(){
         return this.date;
     }
-    abstract String getData();
+    abstract public String getData();
+
+    //just adding an equals for better scalability
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof ClackData) {
+
+        ClackData cd = (ClackData)obj;
+            return this.userName == cd.userName &&
+                    this.type == cd.type &&
+                    this.date == cd.date;
+        }
+        else if (obj == null) return false;
+        else return false;
+    }
 
 
 }

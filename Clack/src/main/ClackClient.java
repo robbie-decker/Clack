@@ -44,8 +44,28 @@ public int getPort(){
 public int hashCode(){
 return 0;    //     <-- needs to be implemented
 }
-public ClackClient equals(ClackClient toBeSet){
-return toBeSet;    //     <-- needs to be implemented
+
+
+public boolean equals(Object toBeSet){
+
+if (toBeSet == null) return false;
+
+    else if(toBeSet instanceof ClackClient) {
+
+        ClackClient dummy = (ClackClient) toBeSet;
+        return true;
+
+    }
+    else return false;
+    /*
+
+
+
+
+     */
+
+
+    //     <-- needs to be implemented
 }
 public String toString(){
 return "not implemented yet";    //     <-- needs to be implemented
