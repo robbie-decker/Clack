@@ -28,8 +28,8 @@ public class TestClackData {
  */
  FileClackData cd1 = new FileClackData("Chris", "this.txt", 1); //constructors work
  FileClackData fcd1 = new FileClackData();
- System.out.println(fcd1.toString()); // toString works
- System.out.println(cd1.toString());
+ System.out.println("fcd1 String: " + fcd1.toString()); // toString works
+ System.out.println("cd1 String: " + cd1.toString());
  System.out.println("fcd1's type: " + fcd1.getType()); //accessor for type works
  System.out.println("cd1's type: " + cd1.getType());
  System.out.println(fcd1.getUserName());
@@ -49,7 +49,7 @@ public class TestClackData {
         System.out.println("cd2 = cd1? " + cd2.equals(cd1));
         System.out.println(cd2.hashCode() + " = " + cd1.hashCode());
         cd2.setFileName("this.txt"); //mutator works
-        
+
         System.out.println("Changed fileName from cd2 to the same as cd1.");
         System.out.println(cd2.hashCode() + " = " + cd1.hashCode());
         System.out.println("cd2 = cd1? " + cd2.equals(cd1));
