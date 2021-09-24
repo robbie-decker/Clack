@@ -4,10 +4,11 @@ import data.ClackData;
 /**
  *
  *
+ *
  * @author: Chris Hickman
  *
  *
- * 
+ *
  */
 public class FileClackData extends ClackData  {
 
@@ -22,7 +23,7 @@ public class FileClackData extends ClackData  {
 
     }
    public FileClackData(){
-        this("anon", "anon", 0); // <-- calls super how???
+        this("anon", "anon", 0);
         //calls super through above constructor
     }
     public void setFileName(String fileName){
@@ -38,16 +39,20 @@ public class FileClackData extends ClackData  {
    }
 
     public int hashCode(){
-       return this.fileName.hashCode(); //           <-- this???
+       int dummy = 13;
+       dummy = 37*dummy + fileName.hashCode();
+       dummy = 37*dummy + fileContents.hashCode();
+       dummy = 37*dummy+ super.hashCode();
+       return dummy;
+
+
     }
 
 
     public boolean equals(Object other){
        if(other instanceof FileClackData) {
            FileClackData f2 = (FileClackData) other;
-            return super.equals(f2) &&
-                    this.fileName == f2.fileName &&
-                    this.fileContents == f2.fileContents;
+            return super.equals(f2) && this.hashCode() == f2.hashCode();
        }
         else if (other == null) return false;
         else return false;

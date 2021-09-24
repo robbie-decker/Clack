@@ -10,6 +10,7 @@ public class ClackClient {
     private ClackData dataToReceiveFromServer;
     public static final int defaultPort = 7000;
 
+
 public ClackClient(String userName, String hostName, int port ){
     this.userName = userName;
     this.hostName = hostName;
@@ -42,7 +43,12 @@ public int getPort(){
     return this.port;
 }
 public int hashCode(){
-return 0;    //     <-- needs to be implemented
+    int result = 13;
+    result = 31*result + port;
+    result = 31*result + userName.hashCode();
+    result = 31*result + hostName.hashCode();
+    return result;
+
 }
 
 
@@ -52,24 +58,15 @@ if (toBeSet == null) return false;
 
     else if(toBeSet instanceof ClackClient) {
 
-        ClackClient dummy = (ClackClient) toBeSet;
-        return true;
+        ClackClient dummy = (ClackClient) toBeSet; // <-- needs to be tweaked
+        return this.hashCode() == dummy.hashCode();
 
     }
     else return false;
-    /*
 
-
-
-
-     */
-
-
-    //     <-- needs to be implemented
 }
-public String toString(){
-return "not implemented yet";    //     <-- needs to be implemented
+public String toString() {
+    return "user name: " + this.userName + ", host name: " + this.hostName + ", port: " + this.port +
+            ", closed connection: " + String.valueOf(closeConnection);
 }
-
-
 }

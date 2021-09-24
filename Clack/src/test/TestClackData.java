@@ -17,7 +17,7 @@ public class TestClackData {
     System.out.println( "this is x_y date: " + x_y.getDate());
     System.out.println( "this is x_x data: " + x_x.getData());
     System.out.println( "this is x_y data: " + x_y.getData());
-    System.out.println(x_y == x_x);
+    System.out.println(x_y.equals(x_x));
 
 
         FileClackData x_a = new FileClackData("UserName", "file.txt", 2);
