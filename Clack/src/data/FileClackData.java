@@ -21,7 +21,7 @@ public class FileClackData extends ClackData  {
    public FileClackData(String userName, String fileName, int type){
         super(userName, type);
         this.fileName = fileName;
-        this.fileContents = null;
+        this.fileContents = "null";
     }
 
     /**
@@ -77,9 +77,11 @@ public class FileClackData extends ClackData  {
      */
     public int hashCode(){
        int dummy = 13;
-       dummy = 37*dummy + fileName.hashCode();
-       dummy = 37*dummy + fileContents.hashCode();
-       dummy = 37*dummy+ super.hashCode();
+       dummy = 17*dummy + fileName.hashCode();
+       dummy = 17*dummy + fileContents.hashCode();
+       dummy = 17*dummy + this.getUserName().hashCode();
+       dummy = 17*dummy + this.getType();
+       dummy = 17*dummy + this.getData().hashCode();
        return dummy;
     }
 
@@ -93,7 +95,7 @@ public class FileClackData extends ClackData  {
     public boolean equals(Object other){
        if(other instanceof FileClackData) {
            FileClackData f2 = (FileClackData) other;
-            return super.equals(f2) && this.hashCode() == f2.hashCode();
+            return this.hashCode() == f2.hashCode();
        }
         else if (other == null) return false;
         else return false;
