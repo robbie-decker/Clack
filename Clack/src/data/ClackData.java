@@ -3,7 +3,7 @@ package data;
 import java.util.Date;
 /**
  * An abstract Class representing data sent between a client and a server
- *6
+ *
  * @author Chris Hickman
  */
 abstract public class ClackData {
