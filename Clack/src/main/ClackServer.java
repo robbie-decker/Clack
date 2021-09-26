@@ -13,6 +13,11 @@ public class ClackServer {
     private ClackData dataToSendToClient;
     public static final int defaultPort = 7000;
 
+    /** 
+     * Constructor that receives a port number for the server to use
+     * 
+     * @param port Port number for the server to use
+    */
 
     public ClackServer(int port){
         this.port = port;
@@ -21,43 +26,69 @@ public class ClackServer {
         this.dataToSendToClient = null;
     }
 
+    /**
+     * Constructor for ClackServer that takes no values
+     */
     public ClackServer(){
         this.port = defaultPort;
         this.closeConnection = false;
         this.dataToRecieveFromClient = null;
         this.dataToSendToClient = null;
     }
-
+    /**
+     * Start server session
+     */
     public void start(){
-    // Just a declaration
 
     }
-
+    /**
+     * Receives data from the client
+     */
     public void receiveData(){
 
     }
-
+    /**
+     * Sends data to client
+     */
     public void sendData(){
 
     }
-    
+    /**
+     * Accessor for the port number
+     * 
+     * @return Port number on server
+     */
     public int getPort(){
         return this.port;
     }
-
-    public void getData(){
-
-    }
-
+    /**
+     * Generates a hashCode for the object
+     * 
+     * @return a hash code representing the object
+     */
     public int hashCode(){
-        return 0;
+        int result = 13;
+        result = 31*result + port;
+        return result;
     }
 
-    public boolean equals(Object other){
-        return false;
+    /**
+     * Checks to see if two ClackSevers are equal
+     */
+    public boolean equals(Object toBeSet){
+        if (toBeSet == null) return false;
+        else if(toBeSet instanceof ClackClient) {
+            ClackClient dummy = (ClackClient) toBeSet; // <-- needs to be tweaked
+            return this.hashCode() == dummy.hashCode();
+       }
+        else return false;
     }
-
+    /**
+     * Returns a string representing a full description of the class
+     *
+     * @returns a string representing a full description of the class
+     */
     public String toString(){
-        return "hello";
+        return "port: " + this.port + ", close connection: " + String.valueOf(this.closeConnection);
     }
 }
