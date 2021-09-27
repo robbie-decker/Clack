@@ -1,5 +1,11 @@
 package test;
 
+/**
+ * A class to test instances of ClackData instantiated in MessageClackData and FileClackData
+ *
+ * @author Chris Hickman and Robbie Decker
+ */
+
 import data.*;
 
 import java.io.File;
