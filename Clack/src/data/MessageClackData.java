@@ -1,5 +1,11 @@
 package data;
 
+/**
+ * A Class, inheriting from ClackData, for messages being sent
+ *
+ * @author: Robbie Decker
+ */
+
 public class MessageClackData extends ClackData {
     private String message;
 

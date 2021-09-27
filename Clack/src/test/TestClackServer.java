@@ -2,6 +2,11 @@ package test;
 
 import main.ClackServer;
 
+/**
+ * A Class for testing ClackServer
+ *
+ * @author: Robbie Decker
+ */
 public class TestClackServer {
     public static void main(String ars[]){
     /**
