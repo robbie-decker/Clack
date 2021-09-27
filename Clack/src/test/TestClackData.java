@@ -1,4 +1,9 @@
 package test;
+/**
+ * Testing class for instances of FileClackData and MessageClackData
+ *
+ * @author Chris Hickman and Robbie Decker
+ */
 
 import data.*;
 
@@ -8,25 +13,7 @@ import java.text.MessageFormat;
 public class TestClackData {
 
     public static void main(String[] args){
-/* have to test ->
-    public int getType(){ |
-    public String getUserName(){ |
-    public Date getDate(){ |
-    abstract public String getData(); |
-    public boolean equals(Object obj){ |
 
-   public FileClackData(String userName, String fileName, int type){ |
-   public FileClackData(){ |
-    public void setFileName(String fileName){
-    public String getFileName(){ |
-    public String getData(){ return this.fileContents;} |
-    public void readFileContents(){ |
-    public void writeFileContents(){ |
-    public int hashCode(){
-    public boolean equals(Object other){
-    public String toString(){
-
- */
     FileClackData cd1 = new FileClackData("Chris", "this.txt", 1);
         System.out.println("cd1 String: " + cd1.toString());
         System.out.println("cd1's type: " + cd1.getType());
