@@ -76,9 +76,10 @@ public class ClackServer {
      * Checks to see if two ClackSevers are equal
      */
     public boolean equals(Object toBeSet){
+        System.out.println(toBeSet);
         if (toBeSet == null) return false;
-        else if(toBeSet instanceof ClackClient) {
-            ClackClient dummy = (ClackClient) toBeSet; // <-- needs to be tweaked
+        else if(toBeSet instanceof ClackServer) {
+            ClackServer dummy = (ClackServer) toBeSet;
             return this.hashCode() == dummy.hashCode();
        }
         else return false;
