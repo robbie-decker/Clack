@@ -52,7 +52,12 @@ public class MessageClackData extends ClackData {
      * @return boolean representing whether the two MessageClackData object are equal
      */
     public boolean equals(Object other){
-        return false;
+        if(other instanceof MessageClackData) {
+            MessageClackData dummy = (MessageClackData) other;
+             return this.hashCode() == dummy.hashCode();
+        }
+         else if (other == null) return false;
+         else return false;
     }
 
 
