@@ -20,7 +20,14 @@ public class TestClackData {
 
     public static void main(String[] args){
 
-    FileClackData cd1 = new FileClackData("Chris", "this.txt", 1);
+    ClackData cd1 = new FileClackData("Chris", "this.txt", 1);
+
+
+      //  String x = cd1.encrypt("BRAVE new WORLD ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqurstuvwxyz", "DIFFERENTKEY");
+      // String y = cd1.decrypt(x, "DIFFERENTKEY");
+      //  System.out.println(x + " : " + y);
+
+
         System.out.println("cd1 String: " + cd1.toString());
         System.out.println("cd1's type: " + cd1.getType());
         System.out.println("cd1's user name: " + cd1.getUserName());
