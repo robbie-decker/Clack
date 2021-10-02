@@ -1,6 +1,7 @@
 package data;
 
 import java.util.Date;
+import java.lang.*;
 /**
  * An abstract Class representing data sent between a client and a server
  *
@@ -79,12 +80,50 @@ abstract public class ClackData {
      */
     abstract public String getData();
 
+
+    protected String encrypt(String inputStringToEncrypt, String key) { //<-- public for now
+        char[] dummy = new char[inputStringToEncrypt.length()]; // toUpperCase, isUpperCase
+        int track = 0;
+        for (int i = 0; i < inputStringToEncrypt.length(); i++) {
+            if (Character.isUpperCase(inputStringToEncrypt.charAt(i))) {
+                dummy[i] = (char)(((inputStringToEncrypt.charAt(i) + key.charAt(track))%26)+'A');
+                track++;
+            }
+            else if (Character.isLowerCase(inputStringToEncrypt.charAt(i))) {
+                dummy[i] = (char)(((inputStringToEncrypt.charAt(i) + key.charAt(track))%26)+'a');
+                track++;
+            }
+            else dummy[i] = inputStringToEncrypt.charAt(i);
+            if(track == key.length()) track = 0;
+        }
+        return new String(dummy);
+    }
+    protected String decrypt(String inputStringToDecrypt, String key){
+        char[] dummy = new char[inputStringToDecrypt.length()]; // toUpperCase, isUpperCase
+        int track = 0;
+        for (int i = 0; i < inputStringToDecrypt.length(); i++) {
+            if (Character.isUpperCase(inputStringToDecrypt.charAt(i))) {
+                dummy[i] = (char)(((inputStringToDecrypt.charAt(i) - key.charAt(track) + 26)%26)+ 'A');
+                track++;
+            }
+            else if (Character.isLowerCase(inputStringToDecrypt.charAt(i))) {
+                dummy[i] = (char)(((inputStringToDecrypt.charAt(i) - key.charAt(track) + 14)%26) + 'a');
+                track++;
+            }
+            else dummy[i] = inputStringToDecrypt.charAt(i);
+            if(track == key.length()) track = 0;
+        }
+        return new String(dummy);
+    }
     /**
      * Checks to see if two ClackData objects are equal
      *
      * @param obj The object you are comparing with.
      * @return A boolean describing whether the objects are identical.
      */
+
+
+
     //just adding an equals for better scalability
     @Override
     public boolean equals(Object obj){
