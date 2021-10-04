@@ -120,6 +120,9 @@ public class ClackClient {
     result = 31*result + port;
     result = 31*result + userName.hashCode();
     result = 31*result + hostName.hashCode();
+    result = 31*result + dataToSendToServer.hashCode();
+    result = 31*result + dataToReceiveFromServer.hashCode();
+    if(closeConnection == true) result += 1;
     return result;
 }
 
@@ -147,6 +150,8 @@ public class ClackClient {
      */
     public String toString() {
     return "user name: " + this.userName + ", host name: " + this.hostName + ", port: " + this.port +
-            ", closed connection: " + String.valueOf(closeConnection);
+            ", closed connection: " + String.valueOf(closeConnection)
+            + " data to send: " + this.dataToSendToServer +
+            " data to recieve: " + this.dataToReceiveFromServer;
 }
 }
