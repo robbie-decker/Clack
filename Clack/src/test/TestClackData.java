@@ -14,18 +14,19 @@ package test;
 import data.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.MessageFormat;
 
 public class TestClackData {
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
 
     ClackData cd1 = new FileClackData("Chris", "this.txt", 1);
 
 
-      //  String x = cd1.encrypt("BRAVE new WORLD ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqurstuvwxyz", "DIFFERENTKEY");
-      // String y = cd1.decrypt(x, "DIFFERENTKEY");
-      //  System.out.println(x + " : " + y);
+       //String x = cd1.encrypt("BRAVE new WORLD ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqurstuvwxyz", "KEY");
+       // String y = cd1.decrypt(x, "KEY");
+        //System.out.println(x + " : " + y);
 
 
         System.out.println("cd1 String: " + cd1.toString());
@@ -88,5 +89,18 @@ public class TestClackData {
         MessageClackData mcd1_again = new MessageClackData("Robbie", "This is my message", 0);
         System.out.println("mcd1 = mcd2? " + mcd1.equals(mcd2));             // Should be false
         System.out.println("mcd1 = mcd1_again? " + mcd1.equals(mcd1_again)); // Should be true
+
+        //testing FileClackData IO
+        ((FileClackData) cd1).setFileName("C:\\Users\\Chrish\\Desktop\\CS242-Project1\\Clack\\src\\test\\input.txt");
+       ((FileClackData)cd1).readFileContents();
+        System.out.println(cd1.getData());
+       // ((FileClackData) cd1).readFileContents("TIME");
+        //((FileClackData) cd1).writeFileContents();
+       //((FileClackData) cd1).writeFileContents("TIME");
+
+
+
     };
+
+
 }
