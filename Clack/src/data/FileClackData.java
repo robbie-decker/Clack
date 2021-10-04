@@ -1,5 +1,7 @@
 package data;
 import data.ClackData;
+import java.io.*;
+import java.io.IOException;
 
 /**
  * A Class, inheriting from ClackData, that represents the contents of a file.
@@ -61,14 +63,79 @@ public class FileClackData extends ClackData  {
     /**
      * Reads a file's content.
      */
-    public void readFileContents(){
-   }
+    public void readFileContents() throws IOException {
+    try{
+        BufferedReader in = new BufferedReader(new FileReader(this.fileName));
+        String next;
+        while ((next = in.readLine()) != null) {
+            this.fileContents += next;
+        }
+        in.close();
+    } catch(FileNotFoundException fnfe){throw new IOException("File not found");
+        } catch(IOException ioe) {
+        System.err.println("Error in opening, writing to, or closing file.");
+      }
+    catch(NullPointerException npe){
+        throw new IOException("null pointer");
+    }
+    }
+    /**
+     * Reads a file's content and encrypts.
+     */
+ public void readFileContents(String key) throws IOException{
+     try{
+         BufferedReader in = new BufferedReader(new FileReader(this.fileName));
+         String next;
+         BufferedWriter file = new BufferedWriter(new FileWriter(this.fileContents));
+         while ((next = in.readLine()) != null) {
+             file.write(this.encrypt(next, key));
+             file.write('\n');
+         }
+         in.close();
+         file.close();
+     } catch(FileNotFoundException fnfe){throw new IOException("File not found");
+     } catch(IOException ioe) {
+         System.err.println("Error in opening, writing to, or closing file.");
+     }
+
+ }
+
 
     /**
      * Writes to a file.
      */
     public void writeFileContents(){
+        try{
+            BufferedReader in = new BufferedReader(new FileReader(this.fileContents));
+            String next;
+            BufferedWriter file = new BufferedWriter(new FileWriter(this.fileName));
+            while ((next = in.readLine()) != null) {
+                file.write(next);
+                file.write('\n');
+            }
+            in.close();
+            file.close();
+        } catch(FileNotFoundException fnfe){new IOException("File not found");
+        } catch(IOException ioe) {
+            System.err.println("Error in opening, writing to, or closing file.");
+        }
    }
+    public void writeFileContents(String key){
+        try{
+            BufferedReader in = new BufferedReader(new FileReader(this.fileContents));
+            String next;
+            BufferedWriter file = new BufferedWriter(new FileWriter(this.fileName));
+            while ((next = in.readLine()) != null) {
+                file.write(this.decrypt(next, key));
+                file.write('\n');
+            }
+            in.close();
+            file.close();
+        } catch(FileNotFoundException fnfe){new IOException("File not found");
+        } catch(IOException ioe) {
+            System.err.println("Error in opening, writing to, or closing file.");
+        }
+    }
 
     /**
      * Generates a hashcode for a FileClackData object
