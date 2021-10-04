@@ -83,15 +83,26 @@ abstract public class ClackData {
 
 
     protected String encrypt(String inputStringToEncrypt, String key) { //<-- public for now
+
         char[] dummy = new char[inputStringToEncrypt.length()]; // toUpperCase, isUpperCase
         int track = 0;
         for (int i = 0; i < inputStringToEncrypt.length(); i++) {
             if (Character.isUpperCase(inputStringToEncrypt.charAt(i))) {
-                dummy[i] = (char)(((inputStringToEncrypt.charAt(i) + key.charAt(track))%26)+'A');
+                if(Character.isUpperCase(key.charAt(track))) {
+                    dummy[i] = (char)(((inputStringToEncrypt.charAt(i) + (key.charAt(track)-65))%26)+'A');
+                }
+                else {
+                    dummy[i] = (char)(((inputStringToEncrypt.charAt(i) + (key.charAt(track)-97))%26)+'A');
+                }
                 track++;
             }
             else if (Character.isLowerCase(inputStringToEncrypt.charAt(i))) {
-                dummy[i] = (char)(((inputStringToEncrypt.charAt(i) + key.charAt(track))%26)+'a');
+                if(Character.isUpperCase(key.charAt(track))) {
+                    dummy[i] = (char)(((inputStringToEncrypt.charAt(i) + (key.charAt(track)-65))%26)+'a');
+                }
+                else {
+                    dummy[i] = (char)(((inputStringToEncrypt.charAt(i) + (key.charAt(track)-97))%26)+'a');
+                }
                 track++;
             }
             else dummy[i] = inputStringToEncrypt.charAt(i);
@@ -104,11 +115,21 @@ abstract public class ClackData {
         int track = 0;
         for (int i = 0; i < inputStringToDecrypt.length(); i++) {
             if (Character.isUpperCase(inputStringToDecrypt.charAt(i))) {
-                dummy[i] = (char)(((inputStringToDecrypt.charAt(i) - key.charAt(track) + 26)%26)+ 'A');
+                if(Character.isUpperCase(key.charAt(track))) {
+                    dummy[i] = (char)(((inputStringToDecrypt.charAt(i) - (key.charAt(track)-65))%26)+'A');
+                }
+                else {
+                    dummy[i] = (char)(((inputStringToDecrypt.charAt(i) - (key.charAt(track)-97))%26)+'A');
+                }
                 track++;
             }
             else if (Character.isLowerCase(inputStringToDecrypt.charAt(i))) {
-                dummy[i] = (char)(((inputStringToDecrypt.charAt(i) - key.charAt(track) + 14)%26) + 'a');
+                if(Character.isUpperCase(key.charAt(track))) {
+                    dummy[i] = (char)(((inputStringToDecrypt.charAt(i) - (key.charAt(track)-65 + 12))%26)+'a');
+                }
+                else {
+                    dummy[i] = (char)(((inputStringToDecrypt.charAt(i) - (key.charAt(track)-97 + 12))%26)+'a');
+                }
                 track++;
             }
             else dummy[i] = inputStringToDecrypt.charAt(i);

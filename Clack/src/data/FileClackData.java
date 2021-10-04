@@ -66,18 +66,16 @@ public class FileClackData extends ClackData  {
     public void readFileContents() throws IOException {
     try{
         BufferedReader in = new BufferedReader(new FileReader(this.fileName));
-        String next;
-        while ((next = in.readLine()) != null) {
-            this.fileContents += next;
+        int next;
+        this.fileContents = "";
+        while ((next = in.read()) != -1) {
+            this.fileContents += (char)next;
         }
         in.close();
-    } catch(FileNotFoundException fnfe){throw new IOException("File not found");
-        } catch(IOException ioe) {
-        System.err.println("Error in opening, writing to, or closing file.");
-      }
-    catch(NullPointerException npe){
-        throw new IOException("null pointer");
-    }
+        } catch(FileNotFoundException fnfe){throw new IOException("File: " + this.fileName +  " not found");
+        } catch(IOException ioe) {System.err.println("Error in opening, writing to, or closing file.");
+        } catch(NullPointerException npe){throw new IOException("null pointer");
+     }
     }
     /**
      * Reads a file's content and encrypts.
@@ -85,19 +83,17 @@ public class FileClackData extends ClackData  {
  public void readFileContents(String key) throws IOException{
      try{
          BufferedReader in = new BufferedReader(new FileReader(this.fileName));
-         String next;
-         BufferedWriter file = new BufferedWriter(new FileWriter(this.fileContents));
-         while ((next = in.readLine()) != null) {
-             file.write(this.encrypt(next, key));
-             file.write('\n');
+         int next;
+         this.fileContents = "";
+         while ((next = in.read()) != -1) {
+             this.fileContents += (char)next;
          }
+        this.fileContents = this.encrypt(this.fileContents, key);
          in.close();
-         file.close();
-     } catch(FileNotFoundException fnfe){throw new IOException("File not found");
-     } catch(IOException ioe) {
-         System.err.println("Error in opening, writing to, or closing file.");
+     } catch(FileNotFoundException fnfe){throw new IOException("File: " + this.fileName +  " not found");
+     } catch(IOException ioe) {System.err.println("Error in opening, writing to, or closing file.");
+     } catch(NullPointerException npe){throw new IOException("null pointer");
      }
-
  }
 
 
@@ -106,32 +102,18 @@ public class FileClackData extends ClackData  {
      */
     public void writeFileContents(){
         try{
-            BufferedReader in = new BufferedReader(new FileReader(this.fileContents));
-            String next;
-            BufferedWriter file = new BufferedWriter(new FileWriter(this.fileName));
-            while ((next = in.readLine()) != null) {
-                file.write(next);
-                file.write('\n');
-            }
-            in.close();
-            file.close();
-        } catch(FileNotFoundException fnfe){new IOException("File not found");
+            BufferedWriter out = new BufferedWriter(new FileWriter(this.fileName));
+            out.write(this.fileContents);
+            out.close();
         } catch(IOException ioe) {
             System.err.println("Error in opening, writing to, or closing file.");
         }
    }
     public void writeFileContents(String key){
         try{
-            BufferedReader in = new BufferedReader(new FileReader(this.fileContents));
-            String next;
-            BufferedWriter file = new BufferedWriter(new FileWriter(this.fileName));
-            while ((next = in.readLine()) != null) {
-                file.write(this.decrypt(next, key));
-                file.write('\n');
-            }
-            in.close();
-            file.close();
-        } catch(FileNotFoundException fnfe){new IOException("File not found");
+            BufferedWriter out = new BufferedWriter(new FileWriter(this.fileName));
+            out.write(decrypt(this.fileContents, key));
+            out.close();
         } catch(IOException ioe) {
             System.err.println("Error in opening, writing to, or closing file.");
         }
