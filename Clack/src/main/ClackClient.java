@@ -6,7 +6,7 @@ import data.*;
  *
  * @author Chris Hickman
  */
-public class ClackClient {
+public class ClackClient{
     private String userName;
     private String hostName;
     private int port;

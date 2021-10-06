@@ -81,6 +81,13 @@ abstract public class ClackData {
      */
     abstract public String getData();
 
+    /**
+     * A method for encrypting a key
+     *
+     * @param inputStringToEncrypt A string to encrypt.
+     * @param key The key associated with the encryption.
+     * @return A string encrypted with the key.
+     */
 
     protected String encrypt(String inputStringToEncrypt, String key) { //<-- public for now
 
@@ -110,6 +117,14 @@ abstract public class ClackData {
         }
         return new String(dummy);
     }
+
+    /**
+     * A method for decrypting an encrypted String.
+     *
+     * @param inputStringToDecrypt The string needed to be decrypted.
+     * @param key The key the string is encrypted with.
+     * @return The decrypted String.
+     */
     protected String decrypt(String inputStringToDecrypt, String key){
         char[] dummy = new char[inputStringToDecrypt.length()]; // toUpperCase, isUpperCase
         int track = 0;
