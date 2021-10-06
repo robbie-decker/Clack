@@ -61,7 +61,9 @@ public class FileClackData extends ClackData  {
     public String getData(){ return this.fileContents;}
 
     /**
-     * Reads a file's content.
+     * Writes a files contents to another file
+     *
+     * @throws IOException
      */
     public void readFileContents() throws IOException {
     try{
@@ -77,8 +79,12 @@ public class FileClackData extends ClackData  {
         } catch(NullPointerException npe){throw new IOException("null pointer");
      }
     }
+
     /**
-     * Reads a file's content and encrypts.
+     * Encrypts and writes a file to another file.
+     *
+     * @param key The key being encrypted with
+     * @throws IOException
      */
  public void readFileContents(String key) throws IOException{
      try{
@@ -109,6 +115,12 @@ public class FileClackData extends ClackData  {
             System.err.println("Error in opening, writing to, or closing file.");
         }
    }
+
+    /**
+     * Writes an encrypted file to file fileName
+     *
+     * @param key The key needed to decrypt the fileContents
+     */
     public void writeFileContents(String key){
         try{
             BufferedWriter out = new BufferedWriter(new FileWriter(this.fileName));
