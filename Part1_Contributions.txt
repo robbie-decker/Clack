@@ -1,0 +1,10 @@
+Robbie Decker
+CS242
+9/27/21
+
+My contributions involve making ClackServer.java, MessageClackData.java, TestClackServer.java, and parts of TestClackData
+to test out MessageClackData and the inherited methods from ClackData. I also set up the github repo, and worked on merging
+our own seperate branches. I also did the diagram, wrote up the report, and generated the javadoc. 
+
+Chris worked on ClackClient.java, FileClackData.java, ClackData.java, TestClackClient, and TestClackData to test out FileClackData.
+He also set up the project itself in intelliJ. 
