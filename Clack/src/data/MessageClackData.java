@@ -48,6 +48,15 @@ public class MessageClackData extends ClackData {
     }
 
     /**
+     * 
+     * @param key Key used to decrypt instant message
+     * @return String representing an instant message
+     */
+    public String getData(String key){
+        return this.message;
+    }
+
+    /**
      * Generates a hashcode for a MessageClackData object
      * 
      * @return Int representing the object's hashcode
