@@ -80,6 +80,13 @@ abstract public class ClackData {
     abstract public String getData();
 
     /**
+     * 
+     * @param key Key used to decrypt string of object
+     * @return A string descriping an object's data
+     */
+    abstract public String getData(String key);
+
+    /**
      * Checks to see if two ClackData objects are equal
      *
      * @param obj The object you are comparing with.
