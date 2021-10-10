@@ -75,13 +75,6 @@ abstract public class ClackData {
     }
 
     /**
-     * abstract method for returning a child class's data
-     *
-     * @return A string describing an object's data
-     */
-    abstract public String getData();
-
-    /**
      * A method for encrypting a key
      *
      * @param inputStringToEncrypt A string to encrypt.
@@ -152,6 +145,13 @@ abstract public class ClackData {
         }
         return new String(dummy);
     }
+    /**
+     * 
+     * @param key Key used to decrypt string of object
+     * @return A string descriping an object's data
+     */
+    abstract public String getData(String key);
+
     /**
      * Checks to see if two ClackData objects are equal
      *
