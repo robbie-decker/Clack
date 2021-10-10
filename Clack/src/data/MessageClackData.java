@@ -29,7 +29,8 @@ public class MessageClackData extends ClackData {
      * @param type Integer representing the type of message
      */
     public MessageClackData(String userName, String message, String key, int type){
-        //ecrypt message using key
+        super(userName, type);
+        this.message = encrypt(message, key);
     }
     /**
      * A default constructor for MessageClackData when no inputs
@@ -53,7 +54,7 @@ public class MessageClackData extends ClackData {
      * @return String representing an instant message
      */
     public String getData(String key){
-        return this.message;
+        return decrypt(this.message, key);
     }
 
     /**
