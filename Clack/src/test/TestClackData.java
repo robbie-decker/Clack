@@ -89,8 +89,12 @@ public class TestClackData {
         MessageClackData mcd1_again = new MessageClackData("Robbie", "This is my message", 0);
         System.out.println("mcd1 = mcd2? " + mcd1.equals(mcd2));             // Should be false
         System.out.println("mcd1 = mcd1_again? " + mcd1.equals(mcd1_again)); // Should be true
-
-        //testing FileClackData IO
+        System.out.println("\n\n\n\n");
+        
+        MessageClackData mc_enc= new MessageClackData("Blake", "New message goes right here", "please", 0);
+        System.out.println("encypted message: " + mc_enc.toString());
+        System.out.println("deccypted message: " + mc_enc.getData("please"));
+    //     //testing FileClackData IO
         ((FileClackData) cd1).setFileName("C:\\Users\\Chrish\\Desktop\\CS242-Project1\\Clack\\src\\test\\input.txt");
        ((FileClackData)cd1).readFileContents();
         //System.out.println(cd1.getData());
