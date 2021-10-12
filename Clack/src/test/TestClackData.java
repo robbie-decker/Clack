@@ -92,12 +92,12 @@ public class TestClackData {
 
         //testing FileClackData IO
         ((FileClackData) cd1).setFileName("C:\\Users\\Chrish\\Desktop\\CS242-Project1\\Clack\\src\\test\\input.txt");
-       ((FileClackData)cd1).readFileContents();
+      // ((FileClackData)cd1).readFileContents();
         //System.out.println(cd1.getData());
-     //((FileClackData) cd1).readFileContents("aZzZaFGs");
+     ((FileClackData) cd1).readFileContents("keALPHA");
       System.out.println(cd1.getData());
-        //((FileClackData) cd1).writeFileContents();
-      //((FileClackData) cd1).writeFileContents("aZzZaFGs");
+      //((FileClackData) cd1).writeFileContents();
+      ((FileClackData) cd1).writeFileContents("keyALPHA");
        // System.out.println(((FileClackData) cd1).getFileName());
 
 

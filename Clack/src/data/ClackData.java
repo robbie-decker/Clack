@@ -15,7 +15,6 @@ abstract public class ClackData {
     public static final int CONSTANT_LOGOUT = 1;
     public static final int CONSTANT_SENDMESSAGE = 2; // <-- how we declare constants????
     public static final int CONSTANT_SENDFILE = 3;
-    public static final String CONSTANT_KEY = "TIMEX";
 
     /**
      * This CLackData constructor initializes the user name and type with

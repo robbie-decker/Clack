@@ -1,4 +1,4 @@
- Speech: “To be, or not to be, that is the question”
+Speech: “To be, or not to be, that is the question”
 By William Shakespeare
 
 (from Hamlet, spoken by Hamlet)
@@ -35,4 +35,6 @@ And thus the native hue of resolution
 Is sicklied o'er with the pale cast of thought,
 And enterprises of great pith and moment
 With this regard their currents turn awry
-And lose the name of action.
+And lose the name of action
+
+abcdefjhijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ
