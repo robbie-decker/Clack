@@ -69,7 +69,7 @@ public class FileClackData extends ClackData  {
      * @return String representing the file contents of a file
      */
     public String getData(String key){
-        return this.fileContents;
+        return decrypt(this.fileContents, key);
     }
 
     /**
