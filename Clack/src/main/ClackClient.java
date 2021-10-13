@@ -27,11 +27,16 @@ public class ClackClient{
      * Constructor for ClackClient that takes in a user-defined user name, host name and port number.
      * Sets closed connection to true, and the data sent/received from and to the server to null.
      *
+     * @throws IllegalArgumentException
+     * 
      * @param userName The user name of the object.
      * @param hostName The name of the computer representing the server.
      * @param port The port number of the server connected to.
      */
-    public ClackClient(String userName, String hostName, int port ){
+    public ClackClient(String userName, String hostName, int port ) throws IllegalArgumentException{
+    if(port < 1024 ) throw new IllegalArgumentException("Port number can not be less than 1024");
+    if(userName == null || userName == "") throw new IllegalArgumentException("Username can not be null");
+    if(hostName == null || hostName == "") throw new IllegalArgumentException("Host name can not be null");
     this.userName = userName;
     this.hostName = hostName;
     this.port = port;
@@ -43,19 +48,23 @@ public class ClackClient{
     /**
      * Constructor that takes in a user-defined user name and host name, sets the port number to defaultPort.
      *
+     * @throws IllegalArgumentException
+     * 
      * @param userName The user name of the client.
      * @param hostName The name of the computer representing the server.
      */
-    public ClackClient(String userName, String hostName) {
+    public ClackClient(String userName, String hostName) throws IllegalArgumentException{
     this(userName, hostName, defaultPort);
 }
 
     /**
      * Constructor that receives a user defined user name.
      *
+     * @throws IllegalArgumentException
+     * 
      * @param userName The user name of the client.
      */
-    public ClackClient(String userName) {
+    public ClackClient(String userName) throws IllegalArgumentException{
     this(userName, "localhost");
 }
 
@@ -92,14 +101,13 @@ public class ClackClient{
                     this.inFromStd.close();
                 }
                 else if(input.contains("SENDFILE")){
-                    File filename = new File(input.replace("SENDFILE", "").replace(" ", ""));
-                    String file_string = filename.getName();
+                    String filename = input.replace("SENDFILE", "").replace(" ", "");
                     try{   
-                        this.dataToSendToServer = new FileClackData(this.userName, file_string, ClackData.CONSTANT_SENDFILE);
+                        this.dataToSendToServer = new FileClackData(this.userName, filename, ClackData.CONSTANT_SENDFILE);
                         ((FileClackData)this.dataToSendToServer).readFileContents();
                     }catch(FileNotFoundException fnfe){
                         this.dataToSendToServer = null;
-                        System.err.println("The file entered is not available: " + fnfe.getMessage());
+                        System.err.println("The file: " + filename +  " is not available: " + fnfe.getMessage());
                     }
                 }
                 else if(input == "LISTUSERS"){
@@ -108,8 +116,8 @@ public class ClackClient{
                 else{
                     this.dataToSendToServer = new MessageClackData(this.userName, input, ClackData.CONSTANT_SENDMESSAGE);
                 }
-            }catch (InputMismatchException ime){
-
+            }catch (IOException ioe){
+                System.err.println(ioe.getMessage());
             } 
             
         }
