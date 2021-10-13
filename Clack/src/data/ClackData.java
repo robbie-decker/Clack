@@ -74,6 +74,19 @@ abstract public class ClackData {
         return this.date;
     }
 
+     /** 
+     * @param key Key used to decrypt string of object
+     * @return A string descriping an object's data
+     */
+    abstract public String getData(String key);
+
+    /**
+     * abstract method for returning a child class's data
+     *
+     * @return A string describing an object's data
+     */
+    abstract public String getData();
+
     /**
      * A method for encrypting a key
      *
@@ -146,21 +159,11 @@ abstract public class ClackData {
         return new String(dummy);
     }
     /**
-     * 
-     * @param key Key used to decrypt string of object
-     * @return A string descriping an object's data
-     */
-    abstract public String getData(String key);
-
-    /**
      * Checks to see if two ClackData objects are equal
      *
      * @param obj The object you are comparing with.
      * @return A boolean describing whether the objects are identical.
      */
-
-
-
     //just adding an equals for better scalability
     @Override
     public boolean equals(Object obj){
