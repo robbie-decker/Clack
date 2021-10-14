@@ -61,9 +61,16 @@ public class FileClackData extends ClackData  {
     public String getData(){ return this.fileContents;}
 
     /**
-     * Writes a files contents to another file
-     *
-     * @throws IOException
+     * 
+     * @param key Key used to decrypt string in fileContents
+     * @return String representing the file contents of a file
+     */
+    public String getData(String key){
+        return decrypt(this.fileContents, key);
+    }
+
+    /**
+     * Reads a file's content.
      */
     public void readFileContents() throws IOException {
     try{
