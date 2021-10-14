@@ -1,4 +1,10 @@
 package main;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 import data.*;
 
 /**
@@ -10,20 +16,27 @@ public class ClackClient{
     private String userName;
     private String hostName;
     private int port;
+    private Scanner inFromStd;
     private boolean closeConnection;
     private ClackData dataToSendToServer;
     private ClackData dataToReceiveFromServer;
     public static final int defaultPort = 7000;
-
+    private static String key;
+    // TODO figure out where key gets initialized
     /**
      * Constructor for ClackClient that takes in a user-defined user name, host name and port number.
      * Sets closed connection to true, and the data sent/received from and to the server to null.
      *
+     * @throws IllegalArgumentException
+     * 
      * @param userName The user name of the object.
      * @param hostName The name of the computer representing the server.
      * @param port The port number of the server connected to.
      */
-    public ClackClient(String userName, String hostName, int port ){
+    public ClackClient(String userName, String hostName, int port ) throws IllegalArgumentException{
+    if(port < 1024 ) throw new IllegalArgumentException("Port number can not be less than 1024");
+    if(userName == null || userName == "") throw new IllegalArgumentException("Username can not be null");
+    if(hostName == null || hostName == "") throw new IllegalArgumentException("Host name can not be null");
     this.userName = userName;
     this.hostName = hostName;
     this.port = port;
@@ -35,19 +48,23 @@ public class ClackClient{
     /**
      * Constructor that takes in a user-defined user name and host name, sets the port number to defaultPort.
      *
+     * @throws IllegalArgumentException
+     * 
      * @param userName The user name of the client.
      * @param hostName The name of the computer representing the server.
      */
-    public ClackClient(String userName, String hostName) {
+    public ClackClient(String userName, String hostName) throws IllegalArgumentException{
     this(userName, hostName, defaultPort);
 }
 
     /**
      * Constructor that receives a user defined user name.
      *
+     * @throws IllegalArgumentException
+     * 
      * @param userName The user name of the client.
      */
-    public ClackClient(String userName) {
+    public ClackClient(String userName) throws IllegalArgumentException{
     this(userName, "localhost");
 }
 
@@ -59,14 +76,52 @@ public class ClackClient{
 }
 
     /**
+     * @throws IOException
      *
      */
-    public void start(){}
+    public void start() throws IOException{
+        this.inFromStd = new Scanner(System.in);
+        while(!this.closeConnection){
+            readClientData();
+            printData();
+            dataToReceiveFromServer = dataToSendToServer;
+        }
+    }
 
     /**
      * Recieves data from the client.
+     * @throws IOException
      */
-    public void readClientData(){}
+    public void readClientData() throws IOException{
+        while(this.inFromStd.hasNext()){
+            try{
+                String input = this.inFromStd.next();
+                if(input == "DONE"){
+                    this.closeConnection = true;
+                    this.inFromStd.close();
+                }
+                else if(input.contains("SENDFILE")){
+                    String filename = input.replace("SENDFILE", "").replace(" ", "");
+                    try{   
+                        this.dataToSendToServer = new FileClackData(this.userName, filename, ClackData.CONSTANT_SENDFILE);
+                        ((FileClackData)this.dataToSendToServer).readFileContents();
+                    }catch(FileNotFoundException fnfe){
+                        this.dataToSendToServer = null;
+                        System.err.println("The file: " + filename +  " is not available: " + fnfe.getMessage());
+                    }
+                }
+                else if(input == "LISTUSERS"){
+                        //TODO WILL IMPLEMENT IN PART 3
+                }
+                else{
+                    this.dataToSendToServer = new MessageClackData(this.userName, input, ClackData.CONSTANT_SENDMESSAGE);
+                }
+            }catch (IOException ioe){
+                System.err.println(ioe.getMessage());
+            } 
+            
+        }
+    }
 
     /**
      * Sends data to the server.
@@ -81,7 +136,9 @@ public class ClackClient{
     /**
      * Prints the received data to the standard output
      */
-    public void printData(){}
+    public void printData(){
+        System.out.println(this.dataToSendToServer.toString());
+    }
 
     /**
      * Accessor for user name.
