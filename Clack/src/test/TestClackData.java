@@ -23,12 +23,6 @@ public class TestClackData {
 
     ClackData cd1 = new FileClackData("Chris", "this.txt", 1);
 
-
-       //String x = cd1.encrypt("BRAVE new WORLD ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqurstuvwxyz", "KEY");
-       // String y = cd1.decrypt(x, "KEY");
-        //System.out.println(x + " : " + y);
-
-
         System.out.println("cd1 String: " + cd1.toString());
         System.out.println("cd1's type: " + cd1.getType());
         System.out.println("cd1's user name: " + cd1.getUserName());
@@ -91,7 +85,7 @@ public class TestClackData {
         System.out.println("mcd1 = mcd1_again? " + mcd1.equals(mcd1_again)); // Should be true
 
         //testing FileClackData IO and encryption
-        ((FileClackData) cd1).setFileName("C:\\Users\\Chrish\\Desktop\\CS242-Project1\\Clack\\src\\test\\input.txt");
+        ((FileClackData) cd1).setFileName("Clack\\src\\test\\input.txt");
         ((FileClackData)cd1).readFileContents();
         System.out.println("cd1's data: " + cd1.getData());
         ((FileClackData) cd1).writeFileContents();
