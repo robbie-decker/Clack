@@ -23,12 +23,6 @@ public class TestClackData {
 
     ClackData cd1 = new FileClackData("Chris", "this.txt", 1);
 
-
-       //String x = cd1.encrypt("BRAVE new WORLD ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqurstuvwxyz", "KEY");
-       // String y = cd1.decrypt(x, "KEY");
-        //System.out.println(x + " : " + y);
-
-
         System.out.println("cd1 String: " + cd1.toString());
         System.out.println("cd1's type: " + cd1.getType());
         System.out.println("cd1's user name: " + cd1.getUserName());
@@ -94,18 +88,22 @@ public class TestClackData {
         MessageClackData mc_enc= new MessageClackData("Blake", "New message goes right here", "please", 0);
         System.out.println("encypted message: " + mc_enc.toString());
         System.out.println("deccypted message: " + mc_enc.getData("please"));
-    //     //testing FileClackData IO
-        ((FileClackData) cd1).setFileName("C:\\Users\\Chrish\\Desktop\\CS242-Project1\\Clack\\src\\test\\input.txt");
-       ((FileClackData)cd1).readFileContents();
-        //System.out.println(cd1.getData());
-     //((FileClackData) cd1).readFileContents("aZzZaFGs");
-      System.out.println(cd1.getData());
-        //((FileClackData) cd1).writeFileContents();
-      //((FileClackData) cd1).writeFileContents("aZzZaFGs");
-       // System.out.println(((FileClackData) cd1).getFileName());
 
 
+        //testing FileClackData IO and encryption
+        ((FileClackData) cd1).setFileName("Clack\\src\\test\\input.txt");
+        ((FileClackData)cd1).readFileContents();
+        System.out.println("cd1's data: " + cd1.getData());
+        ((FileClackData) cd1).writeFileContents();
+        ((FileClackData) cd1).readFileContents("keyALPHA");
+        System.out.println("cd1's data encrypted: " + cd1.getData());
+        ((FileClackData) cd1).writeFileContents("keyALPHA");
+        System.out.println("cd1's data encrypted then decrypted onto this file: " + ((FileClackData) cd1).getFileName());
 
+        //testing the creation of FileClackData for Part2_document.txt
+        ClackData ptd = new FileClackData("Chris", "Part2_document.txt", 1);
+        System.out.println("ptd's Data: " + ptd.getData());
+        System.out.println("ptd's file name: " + ((FileClackData)ptd).getFileName());
     };
 
 

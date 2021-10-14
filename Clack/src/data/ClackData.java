@@ -15,7 +15,6 @@ abstract public class ClackData {
     public static final int CONSTANT_LOGOUT = 1;
     public static final int CONSTANT_SENDMESSAGE = 2; // <-- how we declare constants????
     public static final int CONSTANT_SENDFILE = 3;
-    public static final String CONSTANT_KEY = "TIMEX";
 
     /**
      * This CLackData constructor initializes the user name and type with
@@ -95,7 +94,7 @@ abstract public class ClackData {
      * @return A string encrypted with the key.
      */
 
-    protected String encrypt(String inputStringToEncrypt, String key) { //<-- public for now
+    protected String encrypt(String inputStringToEncrypt, String key) {
 
         char[] dummy = new char[inputStringToEncrypt.length()]; // toUpperCase, isUpperCase
         int track = 0;

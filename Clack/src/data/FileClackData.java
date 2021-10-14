@@ -82,7 +82,7 @@ public class FileClackData extends ClackData  {
         }
         in.close();
         } catch(FileNotFoundException fnfe){throw new IOException("File: " + this.fileName +  " not found");
-        } catch(IOException ioe) {System.err.println("Error in opening, writing to, or closing file.");
+        } catch(IOException ioe) {System.err.println("Error in opening, writing to, or closing file: " + this.fileName);
         } catch(NullPointerException npe){throw new IOException("null pointer");
      }
     }
