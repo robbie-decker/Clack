@@ -88,7 +88,7 @@ abstract public class ClackData {
      * @return A string encrypted with the key.
      */
 
-    protected String encrypt(String inputStringToEncrypt, String key) { //<-- public for now
+    protected String encrypt(String inputStringToEncrypt, String key) {
 
         char[] dummy = new char[inputStringToEncrypt.length()]; // toUpperCase, isUpperCase
         int track = 0;
