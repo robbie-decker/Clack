@@ -94,7 +94,10 @@ public class TestClackData {
         ((FileClackData) cd1).writeFileContents("keyALPHA");
         System.out.println("cd1's data encrypted then decrypted onto this file: " + ((FileClackData) cd1).getFileName());
 
-
+        //testing the creation of FileClackData for Part2_document.txt
+        ClackData ptd = new FileClackData("Chris", "Part2_document.txt", 1);
+        System.out.println("ptd's Data: " + ptd.getData());
+        System.out.println("ptd's file name: " + ((FileClackData)ptd).getFileName());
 
     };
 
