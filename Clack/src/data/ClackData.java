@@ -13,11 +13,11 @@ abstract public class ClackData {
     private Date date;
     public static final int CONSTANT_LISTUSERS = 0;
     public static final int CONSTANT_LOGOUT = 1;
-    public static final int CONSTANT_SENDMESSAGE = 2; // <-- how we declare constants????
+    public static final int CONSTANT_SENDMESSAGE = 2;
     public static final int CONSTANT_SENDFILE = 3;
 
     /**
-     * This CLackData constructor initializes the user name and type with
+     * This ClackData constructor initializes the user name and type with
      * user provided values, automatically initializes date
      *
      * @param userName Username representing name of client user

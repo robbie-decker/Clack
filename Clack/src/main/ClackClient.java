@@ -35,8 +35,8 @@ public class ClackClient{
      */
     public ClackClient(String userName, String hostName, int port ) throws IllegalArgumentException{
     if(port < 1024 ) throw new IllegalArgumentException("Port number can not be less than 1024");
-    if(userName == null || userName == "") throw new IllegalArgumentException("Username can not be null");
-    if(hostName == null || hostName == "") throw new IllegalArgumentException("Host name can not be null");
+    if(userName == null || userName == "") throw new IllegalArgumentException("Username can not be null or empty");
+    if(hostName == null || hostName == "") throw new IllegalArgumentException("Host name can not be null or empty");
     this.userName = userName;
     this.hostName = hostName;
     this.port = port;
@@ -80,27 +80,32 @@ public class ClackClient{
      *
      */
     public void start() throws IOException{
+        this.closeConnection = false;
         this.inFromStd = new Scanner(System.in);
         while(!this.closeConnection){
             readClientData();
             printData();
-            dataToReceiveFromServer = dataToSendToServer;
+            this.dataToReceiveFromServer = this.dataToSendToServer;
         }
     }
 
     /**
      * Recieves data from the client.
+     * User can input:
+     * DONE - to stop the connection
+     * SENDFILE <filename> - to send file contents
+     * LISTUSERS - to list all users
      * @throws IOException
      */
     public void readClientData() throws IOException{
-        while(this.inFromStd.hasNext()){
+        while(this.closeConnection == false && this.inFromStd.hasNext()){
             try{
-                String input = this.inFromStd.next();
-                if(input == "DONE"){
+                String input = this.inFromStd.nextLine();
+                if(input.equals("DONE")){
                     this.closeConnection = true;
-                    this.inFromStd.close();
                 }
                 else if(input.contains("SENDFILE")){
+                    // TODO get filename use regex
                     String filename = input.replace("SENDFILE", "").replace(" ", "");
                     try{   
                         this.dataToSendToServer = new FileClackData(this.userName, filename, ClackData.CONSTANT_SENDFILE);
@@ -110,7 +115,8 @@ public class ClackClient{
                         System.err.println("The file: " + filename +  " is not available: " + fnfe.getMessage());
                     }
                 }
-                else if(input == "LISTUSERS"){
+                else if(input.equals("LISTUSERS")){
+                        System.out.println("Implementation coming soon");
                         //TODO WILL IMPLEMENT IN PART 3
                 }
                 else{
@@ -121,6 +127,7 @@ public class ClackClient{
             } 
             
         }
+        this.inFromStd.close();
     }
 
     /**
@@ -137,7 +144,10 @@ public class ClackClient{
      * Prints the received data to the standard output
      */
     public void printData(){
-        System.out.println(this.dataToSendToServer.toString());
+        if(this.dataToSendToServer != null)
+            System.out.println(this.dataToSendToServer.toString());
+        else   
+            System.out.println("Data is null");
     }
 
     /**
@@ -174,11 +184,13 @@ public class ClackClient{
      */
     public int hashCode(){
     int result = 13;
-    result = 31*result + port;
-    result = 31*result + userName.hashCode();
-    result = 31*result + hostName.hashCode();
-    result = 31*result + dataToSendToServer.hashCode();
-    result = 31*result + dataToReceiveFromServer.hashCode();
+    result = 31*result + this.port;
+    result = 31*result + this.userName.hashCode();
+    result = 31*result + this.hostName.hashCode();
+    if(this.dataToReceiveFromServer != null)
+        result = 31*result + this.dataToSendToServer.hashCode();
+    if(this.dataToSendToServer != null)
+        result = 31*result + this.dataToReceiveFromServer.hashCode();
     if(closeConnection == true) result += 1;
     return result;
 }
