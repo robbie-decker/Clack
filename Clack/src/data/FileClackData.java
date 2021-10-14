@@ -1,5 +1,7 @@
 package data;
 import data.ClackData;
+import java.io.*;
+import java.io.IOException;
 
 /**
  * A Class, inheriting from ClackData, that represents the contents of a file.
@@ -59,16 +61,75 @@ public class FileClackData extends ClackData  {
     public String getData(){ return this.fileContents;}
 
     /**
-     * Reads a file's content.
+     * Writes a files contents to another file
+     *
+     * @throws IOException
      */
-    public void readFileContents(){
-   }
+    public void readFileContents() throws IOException {
+    try{
+        BufferedReader in = new BufferedReader(new FileReader(this.fileName));
+        int next;
+        this.fileContents = "";
+        while ((next = in.read()) != -1) {
+            this.fileContents += (char)next;
+        }
+        in.close();
+        } catch(FileNotFoundException fnfe){throw new IOException("File: " + this.fileName +  " not found");
+        } catch(IOException ioe) {System.err.println("Error in opening, writing to, or closing file: " + this.fileName);
+        } catch(NullPointerException npe){throw new IOException("null pointer");
+     }
+    }
+
+    /**
+     * Encrypts and writes a file to another file.
+     *
+     * @param key The key being encrypted with
+     * @throws IOException
+     */
+ public void readFileContents(String key) throws IOException{
+     try{
+         BufferedReader in = new BufferedReader(new FileReader(this.fileName));
+         int next;
+         this.fileContents = "";
+         while ((next = in.read()) != -1) {
+             this.fileContents += (char)next;
+         }
+        this.fileContents = this.encrypt(this.fileContents, key);
+         in.close();
+     } catch(FileNotFoundException fnfe){throw new IOException("File: " + this.fileName +  " not found");
+     } catch(IOException ioe) {System.err.println("Error in opening, writing to, or closing file.");
+     } catch(NullPointerException npe){throw new IOException("null pointer");
+     }
+ }
+
 
     /**
      * Writes to a file.
      */
     public void writeFileContents(){
+        try{
+            BufferedWriter out = new BufferedWriter(new FileWriter(this.fileName));
+            out.write(this.fileContents);
+            out.close();
+        } catch(IOException ioe) {
+            System.err.println("Error in opening, writing to, or closing file.");
+        }
    }
+
+    /**
+     * Writes an encrypted file to file fileName
+     *
+     * @param key The key needed to decrypt the fileContents
+     */
+    public void writeFileContents(String key){
+        try{
+            BufferedWriter out = new BufferedWriter(new FileWriter(this.fileName));
+            out.write(decrypt(this.fileContents, key));
+            out.close();
+        } catch(IOException ioe) {
+            System.err.println("Error in opening, writing to, or closing file.");
+        }
+    }
 
     /**
      * Generates a hashcode for a FileClackData object
