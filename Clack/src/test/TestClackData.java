@@ -90,15 +90,15 @@ public class TestClackData {
         System.out.println("mcd1 = mcd2? " + mcd1.equals(mcd2));             // Should be false
         System.out.println("mcd1 = mcd1_again? " + mcd1.equals(mcd1_again)); // Should be true
 
-        //testing FileClackData IO
+        //testing FileClackData IO and encryption
         ((FileClackData) cd1).setFileName("C:\\Users\\Chrish\\Desktop\\CS242-Project1\\Clack\\src\\test\\input.txt");
-      // ((FileClackData)cd1).readFileContents();
-        //System.out.println(cd1.getData());
-     ((FileClackData) cd1).readFileContents("keALPHA");
-      System.out.println(cd1.getData());
-      //((FileClackData) cd1).writeFileContents();
-      ((FileClackData) cd1).writeFileContents("keyALPHA");
-       // System.out.println(((FileClackData) cd1).getFileName());
+        ((FileClackData)cd1).readFileContents();
+        System.out.println("cd1's data: " + cd1.getData());
+        ((FileClackData) cd1).writeFileContents();
+        ((FileClackData) cd1).readFileContents("keyALPHA");
+        System.out.println("cd1's data encrypted: " + cd1.getData());
+        ((FileClackData) cd1).writeFileContents("keyALPHA");
+        System.out.println("cd1's data encrypted then decrypted onto this file: " + ((FileClackData) cd1).getFileName());
 
 
 
