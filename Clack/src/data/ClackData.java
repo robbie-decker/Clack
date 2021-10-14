@@ -88,13 +88,6 @@ abstract public class ClackData {
     abstract public String getData();
 
     /**
-     * abstract method for returning a child class's data
-     *
-     * @return A string describing an object's data
-     */
-    abstract public String getData();
-
-    /**
      * A method for encrypting a key
      *
      * @param inputStringToEncrypt A string to encrypt.
