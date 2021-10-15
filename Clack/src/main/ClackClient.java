@@ -21,7 +21,7 @@ public class ClackClient{
     private ClackData dataToSendToServer;
     private ClackData dataToReceiveFromServer;
     public static final int defaultPort = 7000;
-    private static String key;
+    public static final String KEY = "KwxhSHH";
     // TODO figure out where key gets initialized
     /**
      * Constructor for ClackClient that takes in a user-defined user name, host name and port number.
