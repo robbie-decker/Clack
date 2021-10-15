@@ -86,12 +86,12 @@ public class TestClackData {
         System.out.println("\n\n\n\n");
         
         MessageClackData mc_enc= new MessageClackData("Blake", "New message goes right here", "please", 0);
-        System.out.println("encypted message: " + mc_enc.toString());
-        System.out.println("deccypted message: " + mc_enc.getData("please"));
+        System.out.println("encrypted message: " + mc_enc.toString());
+        System.out.println("decrypted message: " + mc_enc.getData("please"));
 
 
         //testing FileClackData IO and encryption
-        ((FileClackData) cd1).setFileName("Clack\\src\\test\\input.txt");
+        ((FileClackData) cd1).setFileName("Clack//src//test//Part2_document.txt");
         ((FileClackData)cd1).readFileContents();
         System.out.println("cd1's data: " + cd1.getData());
         ((FileClackData) cd1).writeFileContents();
@@ -100,10 +100,7 @@ public class TestClackData {
         ((FileClackData) cd1).writeFileContents("keyALPHA");
         System.out.println("cd1's data encrypted then decrypted onto this file: " + ((FileClackData) cd1).getFileName());
 
-        //testing the creation of FileClackData for Part2_document.txt
-        ClackData ptd = new FileClackData("Chris", "Part2_document.txt", 1);
-        System.out.println("ptd's Data: " + ptd.getData());
-        System.out.println("ptd's file name: " + ((FileClackData)ptd).getFileName());
+
     };
 
 
