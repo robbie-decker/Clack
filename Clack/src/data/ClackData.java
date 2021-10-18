@@ -2,12 +2,13 @@ package data;
 
 import java.util.Date;
 import java.lang.*;
+import java.io.Serializable;
 /**
  * An abstract Class representing data sent between a client and a server
  *
  * @author Chris Hickman
  */
-abstract public class ClackData {
+abstract public class ClackData implements Serializable {
     private String userName;
     private int type;
     private Date date;

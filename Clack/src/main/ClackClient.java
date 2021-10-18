@@ -1,7 +1,6 @@
 package main;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -20,9 +19,13 @@ public class ClackClient{
     private boolean closeConnection;
     private ClackData dataToSendToServer;
     private ClackData dataToReceiveFromServer;
+    private ObjectInputStream inFromServer;
+    private ObjectOutputStream outToServer;
+
+
     public static final int defaultPort = 7000;
     public static final String KEY = "KwxhSHH";
-    // TODO figure out where key gets initialized
+
     /**
      * Constructor for ClackClient that takes in a user-defined user name, host name and port number.
      * Sets closed connection to true, and the data sent/received from and to the server to null.
