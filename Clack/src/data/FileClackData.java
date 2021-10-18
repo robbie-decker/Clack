@@ -100,7 +100,7 @@ public class FileClackData extends ClackData  {
          while ((next = in.read()) != -1) {
              this.fileContents += (char)next;
          }
-        this.fileContents = this.decrypt(this.fileContents, key);
+        this.fileContents = this.encrypt(this.fileContents, key);
          in.close();
      } catch(FileNotFoundException fnfe){throw new FileNotFoundException("File: " + this.fileName +  " not found");
      } catch(IOException ioe) {System.err.println("Error in opening, writing to, or closing file.");
