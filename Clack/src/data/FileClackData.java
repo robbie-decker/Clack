@@ -1,7 +1,6 @@
 package data;
 import data.ClackData;
 import java.io.*;
-import java.io.IOException;
 
 /**
  * A Class, inheriting from ClackData, that represents the contents of a file.
@@ -72,7 +71,7 @@ public class FileClackData extends ClackData  {
     /**
      * Reads a file's content.
      */
-    public void readFileContents() throws IOException {
+    public void readFileContents() throws IOException, FileNotFoundException {
     try{
         BufferedReader in = new BufferedReader(new FileReader(this.fileName));
         int next;
@@ -81,7 +80,7 @@ public class FileClackData extends ClackData  {
             this.fileContents += (char)next;
         }
         in.close();
-        } catch(FileNotFoundException fnfe){throw new IOException("File: " + this.fileName +  " not found");
+        } catch(FileNotFoundException fnfe){throw new FileNotFoundException("File: " + this.fileName +  " not found");
         } catch(IOException ioe) {System.err.println("Error in opening, writing to, or closing file: " + this.fileName);
         } catch(NullPointerException npe){throw new IOException("null pointer");
      }
@@ -93,7 +92,7 @@ public class FileClackData extends ClackData  {
      * @param key The key being encrypted with
      * @throws IOException
      */
- public void readFileContents(String key) throws IOException{
+ public void readFileContents(String key) throws IOException, FileNotFoundException{
      try{
          BufferedReader in = new BufferedReader(new FileReader(this.fileName));
          int next;
@@ -103,7 +102,7 @@ public class FileClackData extends ClackData  {
          }
         this.fileContents = this.encrypt(this.fileContents, key);
          in.close();
-     } catch(FileNotFoundException fnfe){throw new IOException("File: " + this.fileName +  " not found");
+     } catch(FileNotFoundException fnfe){throw new FileNotFoundException("File: " + this.fileName +  " not found");
      } catch(IOException ioe) {System.err.println("Error in opening, writing to, or closing file.");
      } catch(NullPointerException npe){throw new IOException("null pointer");
      }

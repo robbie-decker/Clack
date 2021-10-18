@@ -85,21 +85,31 @@ public class TestClackData {
         System.out.println("mcd1 = mcd1_again? " + mcd1.equals(mcd1_again)); // Should be true
         System.out.println("\n\n\n\n");
         
+        // Testing MessageClackData encryption
         MessageClackData mc_enc= new MessageClackData("Blake", "New message goes right here", "please", 0);
-        System.out.println("encrypted message: " + mc_enc.toString());
+        System.out.println("encypted message: " + mc_enc.toString());
+        // Tests new overloaded getData method
         System.out.println("decrypted message: " + mc_enc.getData("please"));
 
 
         //testing FileClackData IO and encryption
-        ((FileClackData) cd1).setFileName("Clack//src//test//Part2_document.txt");
+        System.out.println("cd1's data: " + cd1.toString());
+        ((FileClackData)cd1).setFileName("Clack//src//test//Part2_document.txt");
+        System.out.println("cd1's data: " + cd1.toString());
+        System.out.println("\n\n\n");
         ((FileClackData)cd1).readFileContents();
         System.out.println("cd1's data: " + cd1.getData());
         ((FileClackData) cd1).writeFileContents();
         ((FileClackData) cd1).readFileContents("keyALPHA");
+        
         System.out.println("cd1's data encrypted: " + cd1.getData());
+        System.out.println("\n");
+        // Tests new overloaded getData method
+        System.out.println("cd1's data encrypted and decrypted given the key: " + cd1.getData("keyALPHA"));
+        System.out.println("\n");
         ((FileClackData) cd1).writeFileContents("keyALPHA");
+        System.out.println("\n");
         System.out.println("cd1's data encrypted then decrypted onto this file: " + ((FileClackData) cd1).getFileName());
-
 
     };
 
