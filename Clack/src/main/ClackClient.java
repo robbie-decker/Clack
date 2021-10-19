@@ -1,6 +1,7 @@
 package main;
 import java.io.File;
 import java.io.*;
+import java.net.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -11,6 +12,7 @@ import data.*;
  *
  * @author Chris Hickman
  */
+
 public class ClackClient{
     private String userName;
     private String hostName;
@@ -25,6 +27,16 @@ public class ClackClient{
 
     public static final int defaultPort = 7000;
     public static final String KEY = "KwxhSHH";
+
+    public static void main(String[] args){
+        try {
+            ClackClient client = new ClackClient();
+            client.start();
+        }catch(IOException ioe){
+            System.err.println(ioe.getMessage());
+        }
+    }
+
 
     /**
      * Constructor for ClackClient that takes in a user-defined user name, host name and port number.
@@ -46,6 +58,8 @@ public class ClackClient{
     this.closeConnection = true;
     this.dataToSendToServer = null;
     this.dataToReceiveFromServer = null;
+    this.outToServer = null;
+    this.inFromServer = null;
 }
 
     /**
@@ -84,13 +98,24 @@ public class ClackClient{
      */
     public void start() throws IOException{
         this.closeConnection = false;
-        this.inFromStd = new Scanner(System.in);
-        while(!this.closeConnection){
-            readClientData();
-            printData();
-            this.dataToReceiveFromServer = this.dataToSendToServer;
+        try {
+            Socket serverConnect = new Socket("", this.port); // <- not sure what the host name is supposed to be
+            this.outToServer = new ObjectOutputStream(serverConnect.getOutputStream());
+            this.inFromServer = new ObjectInputStream(serverConnect.getInputStream());
+            this.inFromStd = new Scanner(System.in);
+            while (!this.closeConnection) {
+                this.readClientData();
+                this.sendData();
+                this.printData();
+                this.receiveData();
+            }
+            serverConnect.close();
+            this.inFromStd.close();
+            this.outToServer.close();
+            this.inFromServer.close();
+        } catch (IOException ioe){ System.err.println("Issue with IO."); }
+
         }
-    }
 
     /**
      * Recieves data from the client.
@@ -136,12 +161,21 @@ public class ClackClient{
     /**
      * Sends data to the server.
      */
-    public void sendData(){}
+    public void sendData(){
+        try {
+            outToServer.writeObject(this.dataToSendToServer);
+        } catch (IOException ioe){System.err.println("Error writing data to server.");}
+    }
 
     /**
      * Receives data from the server.
      */
-    public void receiveData(){}
+    public void receiveData(){
+      //  try {
+        //    inFromServer.read(this.dataToReceiveFromServer);
+        //} catch (IOException ioe){System.err.println("Error writing data to server.");}
+
+    }
 
     /**
      * Prints the received data to the standard output
