@@ -28,6 +28,11 @@ public class ClackClient{
     public static final int defaultPort = 7000;
     public static final String KEY = "KwxhSHH";
 
+    /**
+     * Main method for running a ClackClient object
+     *
+     * @param args
+     */
     public static void main(String[] args){
         try {
             ClackClient client = new ClackClient();
@@ -36,6 +41,40 @@ public class ClackClient{
             System.err.println(ioe.getMessage());
         }
     }
+
+    /**
+     * Main method for running a ClackClient object that takes a paramater, given a:
+     * <username> or a
+     *   <username>@<hostname>
+     *     or a <username>@<hostname>:<port>
+     * port must be an integer.
+     *
+     * @param args
+     * @param info
+     */
+    public static void main(String[] args, String  info){
+        try {
+            ClackClient client;
+            String username = info;
+            String hostname = "";
+            String portnumber = "";
+            String[] l = username.split("@", 2);
+            if (l.length == 2) {
+                username = l[0];
+                hostname = l[1];
+                String[] m = hostname.split(":", 2);
+                if (m.length == 2) {
+                    client = new ClackClient(username, m[0], Integer.parseInt(m[1]));
+                } else client = new ClackClient(username, m[0]);
+            }else client = new ClackClient(username);
+            client.start();
+        }catch(IOException ioe){
+            System.err.println(ioe.getMessage());
+        }catch(NumberFormatException nfe){System.err.println("illegal port number");
+        }
+    }
+
+
 
 
     /**
@@ -93,7 +132,11 @@ public class ClackClient{
 }
 
     /**
-     * @throws IOException
+     * Starts a connection with a server at the port number defaultPort.
+     * Opens a connection to a server, opens ObjectInputStreams and ObjectOutputStreams and a scanner, and reads in and out through
+     * these objects.
+     *
+     * @throws IOException if there is an issue with the IO.
      *
      */
     public void start() throws IOException{
@@ -106,8 +149,8 @@ public class ClackClient{
             while (!this.closeConnection) {
                 this.readClientData();
                 this.sendData();
-                this.printData();
                 this.receiveData();
+                this.printData();
             }
             serverConnect.close();
             this.inFromStd.close();
@@ -171,10 +214,10 @@ public class ClackClient{
      * Receives data from the server.
      */
     public void receiveData(){
-      //  try {
-        //    inFromServer.read(this.dataToReceiveFromServer);
-        //} catch (IOException ioe){System.err.println("Error writing data to server.");}
-
+       try {
+        this.dataToReceiveFromServer =  (ClackData)inFromServer.readObject();
+        } catch (IOException ioe){System.err.println("Error writing data to server.");
+        } catch (ClassNotFoundException cnfe){System.err.println("Class not found");}
     }
 
     /**
