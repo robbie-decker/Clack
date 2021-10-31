@@ -142,7 +142,7 @@ public class ClackClient{
     public void start() throws IOException{
         this.closeConnection = false;
         try {
-            Socket serverConnect = new Socket("", this.port); // <- not sure what the host name is supposed to be
+            Socket serverConnect = new Socket(this.hostName, this.port); // <- not sure what the host name is supposed to be
             this.outToServer = new ObjectOutputStream(serverConnect.getOutputStream());
             this.inFromServer = new ObjectInputStream(serverConnect.getInputStream());
             this.inFromStd = new Scanner(System.in);
