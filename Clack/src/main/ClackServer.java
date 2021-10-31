@@ -1,4 +1,7 @@
 package main;
+import java.io.*;
+import java.net.*;
+
 import data.*;
 /**
  * Class for hosting clack service
@@ -11,6 +14,8 @@ public class ClackServer {
     private boolean closeConnection;
     private ClackData dataToRecieveFromClient;
     private ClackData dataToSendToClient;
+    private ObjectInputStream inFromClient;
+    private ObjectOutputStream outToClient;
     public static final int defaultPort = 7000;
 
     /** 
@@ -24,6 +29,8 @@ public class ClackServer {
         this.closeConnection = false;
         this.dataToRecieveFromClient = null;
         this.dataToSendToClient = null;
+        this.inFromClient = null;
+        this.outToClient = null;
     }
 
     /**
@@ -39,19 +46,44 @@ public class ClackServer {
      * Start server session
      */
     public void start(){
+        this.closeConnection = false;
+        try{
+            ServerSocket server = new ServerSocket(this.port);
+            System.out.println("Server now running on port: " + this.port);
+            Socket clientSocket = server.accept();
+            this.outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
+            this.inFromClient = new ObjectInputStream(clientSocket.getInputStream());
+            while(!this.closeConnection){
+                this.receiveData();
+                this.sendData();
 
+            }
+`           server.close();
+            clientSocket.close();
+            inFromClient.close();
+            outToClient.close();
+        }
+        catch(UnknownHostException uhe){System.err.println(uhe.getMessage());}
+        catch(NoRouteToHostException nrhe){System.err.println(nrhe.getMessage());}
+        catch(ConnectException ce){System.err.println(ce.getMessage());}
+        catch(IOException ioe){System.err.println(ioe.getMessage());}
     }
     /**
      * Receives data from the client
      */
     public void receiveData(){
-
-    }
+        try{
+            this.dataToRecieveFromClient = (ClackData)inFromClient.readObject();
+        }catch (IOException ioe){System.err.println("Error reading data from client");
+        }catch (ClassNotFoundException cnfe){System.err.println("Class not found");}
+     }
     /**
      * Sends data to client
      */
     public void sendData(){
-
+        try{
+            outToClient.writeObject(this.dataToSendToClient);
+        }catch(IOException ioe){System.err.println(ioe.getMessage());}
     }
     /**
      * Accessor for the port number
