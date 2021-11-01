@@ -49,7 +49,7 @@ abstract public class ClackData implements Serializable {
     public ClackData(){
         this("Anon", CONSTANT_LOGOUT);// <-- discuss whether this is the best constant to use
     }
-    /**
+    /**-
      * This is the accessor for the type.
      *
      * @return Value of ClackData's type.
@@ -76,7 +76,7 @@ abstract public class ClackData implements Serializable {
 
      /** 
      * @param key Key used to decrypt string of object
-     * @return A string descriping an object's data
+     * @return A string describing an object's data
      */
     abstract public String getData(String key);
 
