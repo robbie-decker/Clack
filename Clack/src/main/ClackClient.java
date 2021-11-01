@@ -52,7 +52,7 @@ public class ClackClient{
      * @param args
      * @param info
      */
-    public static void main(String[] args, String  info){
+    public static void main(String[] args, String info){
         try {
             ClackClient client;
             String username = info;
@@ -142,7 +142,7 @@ public class ClackClient{
     public void start() throws IOException{
         this.closeConnection = false;
         try {
-            Socket serverConnect = new Socket(this.hostName, this.port); // <- not sure what the host name is supposed to be
+            Socket serverConnect = new Socket(this.hostName, this.port);
             this.outToServer = new ObjectOutputStream(serverConnect.getOutputStream());
             this.inFromServer = new ObjectInputStream(serverConnect.getInputStream());
             this.inFromStd = new Scanner(System.in);
@@ -156,7 +156,8 @@ public class ClackClient{
             this.inFromStd.close();
             this.outToServer.close();
             this.inFromServer.close();
-        } catch (IOException ioe){ System.err.println("Issue with IO."); }
+        } catch (IOException ioe){ System.err.println("Issue with IO.");
+        }
 
         }
 
@@ -225,7 +226,7 @@ public class ClackClient{
      */
     public void printData(){
         if(this.dataToSendToServer != null)
-            System.out.println(this.dataToSendToServer.toString());
+            System.out.println(this.dataToReceiveFromServer.toString());
         else   
             System.out.println("Data is null");
     }
