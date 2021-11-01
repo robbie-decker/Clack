@@ -226,7 +226,7 @@ public class ClackClient{
      */
     public void printData(){
         if(this.dataToSendToServer != null)
-            System.out.println(this.dataToSendToServer.toString());
+            System.out.println(this.dataToReceiveFromServer.toString());
         else   
             System.out.println("Data is null");
     }
