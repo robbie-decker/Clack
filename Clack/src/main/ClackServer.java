@@ -18,13 +18,31 @@ public class ClackServer {
     private ObjectOutputStream outToClient;
     public static final int defaultPort = 7000;
 
+    public static void main(String[] args){
+        try{
+            ClackServer clackServer = new ClackServer();
+            clackServer.start();
+
+        }catch(IOException ioe){
+            System.err.println(ioe.getMessage());
+        }
+    }
+
+    public static void main(String[] args, int portnum){
+        try {
+            ClackServer clackServer = new ClackServer(portnum);
+            clackServer.start();
+        }catch(IOException ioe){
+            System.err.println(ioe.getMessage());
+        }catch(NumberFormatException nfe){System.err.println("illegal port number");
+        }
+    }
     /** 
      * Constructor that receives a port number for the server to use
      * 
      * @param port Port number for the server to use
     */
-
-    public ClackServer(int port){
+    public ClackServer(int port) throws IllegalArgumentException{
         this.port = port;
         this.closeConnection = false;
         this.dataToRecieveFromClient = null;
@@ -45,7 +63,7 @@ public class ClackServer {
     /**
      * Start server session
      */
-    public void start(){
+    public void start() throws IOException{
         this.closeConnection = false;
         try{
             ServerSocket server = new ServerSocket(this.port);
@@ -58,10 +76,10 @@ public class ClackServer {
                 this.sendData();
 
             }
-`           server.close();
+            server.close();
             clientSocket.close();
-            inFromClient.close();
-            outToClient.close();
+            this.inFromClient.close();
+            this.outToClient.close();
         }
         catch(UnknownHostException uhe){System.err.println(uhe.getMessage());}
         catch(NoRouteToHostException nrhe){System.err.println(nrhe.getMessage());}
@@ -74,6 +92,7 @@ public class ClackServer {
     public void receiveData(){
         try{
             this.dataToRecieveFromClient = (ClackData)inFromClient.readObject();
+            System.out.println("dataToRecieveFromClient: " + this.dataToRecieveFromClient);
         }catch (IOException ioe){System.err.println("Error reading data from client");
         }catch (ClassNotFoundException cnfe){System.err.println("Class not found");}
      }
