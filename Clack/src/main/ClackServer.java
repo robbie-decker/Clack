@@ -69,11 +69,15 @@ public class ClackServer {
             ServerSocket server = new ServerSocket(this.port);
             System.out.println("Server now running on port: " + this.port);
             Socket clientSocket = server.accept();
+            System.out.println("New Connection from: " + clientSocket.getInetAddress());
+
             this.outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
             this.inFromClient = new ObjectInputStream(clientSocket.getInputStream());
             while(!this.closeConnection){
                 this.receiveData();
-                dataToRecieveFromClient = dataToSendToClient;
+
+                this.dataToSendToClient = this.dataToRecieveFromClient;
+
                 this.sendData();
             }
             server.close();
@@ -92,7 +96,9 @@ public class ClackServer {
     public void receiveData(){
         try{
             this.dataToRecieveFromClient = (ClackData)inFromClient.readObject();
-            System.out.println("dataToRecieveFromClient: " + this.dataToRecieveFromClient);
+            System.out.println("Data from client: " + dataToRecieveFromClient.getData());
+            if(dataToRecieveFromClient.getData().equals("DONE"))
+                this.closeConnection = true;
         }catch (IOException ioe){System.err.println("Error reading data from client");
         }catch (ClassNotFoundException cnfe){System.err.println("Class not found");}
      }

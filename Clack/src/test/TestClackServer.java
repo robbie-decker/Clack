@@ -13,7 +13,9 @@ public class TestClackServer {
      * Test ClackServer object and its functions
      */
         ClackServer test1 = new ClackServer(300);
-      //  test1.start();          //This call does nothing since there is only a declaration
+
+        // test1.start();          //This call does nothing since there is only a declaration
+
         test1.receiveData();    //This call does nothing since there is only a declaration
         test1.sendData();       //This call does nothing since there is only a declaration
         System.out.println("test1 port: " + test1.getPort()); 
