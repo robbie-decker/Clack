@@ -18,7 +18,24 @@ public class ClackServer {
     private ObjectOutputStream outToClient;
     public static final int defaultPort = 7000;
 
+    /**
+     * Main method for running a ClackServer object with correct arguments
+     * 
+     * @param args
+     */
     public static void main(String[] args){
+        if(args.length == 0)
+            main();
+        else if(args.length == 1)
+            main(Integer.parseInt(args[0]));
+        else 
+            System.out.println("Invalid input of arguments");
+
+    }
+    /**
+     * Overloaded main method for running a ClackServer object on the default port (7000)
+     */
+    public static void main(){
         try{
             ClackServer clackServer = new ClackServer();
             clackServer.start();
@@ -27,8 +44,12 @@ public class ClackServer {
             System.err.println(ioe.getMessage());
         }
     }
-
-    public static void main(String[] args, int portnum){
+    /**
+     * Overloaded main method for running a ClackServer object with a given portnumber
+     * 
+     * @param portnum Port number the user gives when running the program
+     */
+    public static void main(int portnum){
         try {
             ClackServer clackServer = new ClackServer(portnum);
             clackServer.start();
@@ -62,6 +83,8 @@ public class ClackServer {
     }
     /**
      * Start server session
+     * Read data from client and echo message sent back to client
+     * Closes connection when DONE is read
      */
     public void start() throws IOException{
         this.closeConnection = false;
