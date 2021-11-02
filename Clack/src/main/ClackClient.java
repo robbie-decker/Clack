@@ -33,14 +33,16 @@ public class ClackClient{
      *
      * @param args
      */
-    public static void main(String[] args){
+
+    
+    /*public static void main(String[] args){
         try {
             ClackClient client = new ClackClient();
             client.start();
         }catch(IOException ioe){
             System.err.println(ioe.getMessage());
         }
-    }
+    }*/
 
     /**
      * Main method for running a ClackClient object that takes a paramater, given a:
@@ -50,27 +52,36 @@ public class ClackClient{
      * port must be an integer.
      *
      * @param args
-     * @param info
      */
-    public static void main(String[] args, String info){
-        try {
-            ClackClient client;
-            String username = info;
-            String hostname = "";
-            String portnumber = "";
-            String[] l = username.split("@", 2);
-            if (l.length == 2) {
-                username = l[0];
-                hostname = l[1];
-                String[] m = hostname.split(":", 2);
-                if (m.length == 2) {
-                    client = new ClackClient(username, m[0], Integer.parseInt(m[1]));
-                } else client = new ClackClient(username, m[0]);
-            }else client = new ClackClient(username);
-            client.start();
-        }catch(IOException ioe){
-            System.err.println(ioe.getMessage());
-        }catch(NumberFormatException nfe){System.err.println("illegal port number");
+    public static void main(String[] args) {
+        if (args.length < 1) {
+            try {
+                ClackClient client = new ClackClient();
+                client.start();
+            } catch (IOException ioe) {
+                System.err.println(ioe.getMessage());
+            }
+        } else {
+            try {
+                ClackClient client;
+                String username = args[0];
+                String hostname = "";
+                String portnumber = "";
+                String[] l = username.split("@", 2);
+                if (l.length == 2) {
+                    username = l[0];
+                    hostname = l[1];
+                    String[] m = hostname.split(":", 2);
+                    if (m.length == 2) {
+                        client = new ClackClient(username, m[0], Integer.parseInt(m[1]));
+                    } else client = new ClackClient(username, m[0]);
+                } else client = new ClackClient(username);
+                client.start();
+            } catch (IOException ioe) {
+                System.err.println(ioe.getMessage());
+            } catch (NumberFormatException nfe) {
+                System.err.println("illegal port number");
+            }
         }
     }
 
