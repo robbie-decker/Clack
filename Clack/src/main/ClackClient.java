@@ -170,36 +170,33 @@ public class ClackClient{
      * @throws IOException
      */
     public void readClientData() throws IOException{
-        while(this.closeConnection == false && this.inFromStd.hasNext()){
-            try{
-                String input = this.inFromStd.nextLine();
-                if(input.equals("DONE")){
-                    this.closeConnection = true;
+        try{
+            String input = this.inFromStd.nextLine();
+            if(input.equals("DONE")){
+                this.dataToSendToServer = new MessageClackData(this.userName, input, ClackData.CONSTANT_LOGOUT);
+                this.closeConnection = true;
+            }
+            else if(input.contains("SENDFILE")){
+                // TODO get filename use regex
+                String filename = input.replace("SENDFILE", "").replace(" ", "");
+                try{   
+                    this.dataToSendToServer = new FileClackData(this.userName, filename, ClackData.CONSTANT_SENDFILE);
+                    ((FileClackData)this.dataToSendToServer).readFileContents();
+                }catch(FileNotFoundException fnfe){
+                    this.dataToSendToServer = null;
+                    System.err.println("The file: " + filename +  " is not available: " + fnfe.getMessage());
                 }
-                else if(input.contains("SENDFILE")){
-                    // TODO get filename use regex
-                    String filename = input.replace("SENDFILE", "").replace(" ", "");
-                    try{   
-                        this.dataToSendToServer = new FileClackData(this.userName, filename, ClackData.CONSTANT_SENDFILE);
-                        ((FileClackData)this.dataToSendToServer).readFileContents();
-                    }catch(FileNotFoundException fnfe){
-                        this.dataToSendToServer = null;
-                        System.err.println("The file: " + filename +  " is not available: " + fnfe.getMessage());
-                    }
-                }
-                else if(input.equals("LISTUSERS")){
-                        System.out.println("Implementation coming soon");
-                        //TODO WILL IMPLEMENT IN PART 3
-                }
-                else{
-                    this.dataToSendToServer = new MessageClackData(this.userName, input, ClackData.CONSTANT_SENDMESSAGE);
-                }
-            }catch (IOException ioe){
-                System.err.println(ioe.getMessage());
-            } 
-            
-        }
-        this.inFromStd.close();
+            }
+            else if(input.equals("LISTUSERS")){
+                    System.out.println("Implementation coming soon");
+                    //TODO WILL IMPLEMENT IN PART 3
+            }
+            else{
+                this.dataToSendToServer = new MessageClackData(this.userName, input, ClackData.CONSTANT_SENDMESSAGE);
+            }
+        }catch (IOException ioe){
+            System.err.println(ioe.getMessage());
+        } 
     }
 
     /**
@@ -225,10 +222,10 @@ public class ClackClient{
      * Prints the received data to the standard output
      */
     public void printData(){
-        if(this.dataToSendToServer != null)
-            System.out.println(this.dataToReceiveFromServer.toString());
+        if(this.dataToReceiveFromServer != null)
+            System.out.println(this.dataToReceiveFromServer.getData());
         else   
-            System.out.println("Data is null");
+            System.out.println("Data from server is null");
     }
 
     /**
