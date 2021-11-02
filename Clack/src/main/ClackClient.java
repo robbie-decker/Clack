@@ -146,6 +146,7 @@ public class ClackClient{
             this.outToServer = new ObjectOutputStream(serverConnect.getOutputStream());
             this.inFromServer = new ObjectInputStream(serverConnect.getInputStream());
             this.inFromStd = new Scanner(System.in);
+            System.out.println("Client is now running..");
             while (!this.closeConnection) {
                 this.readClientData();
                 this.sendData();
@@ -170,6 +171,7 @@ public class ClackClient{
      * @throws IOException
      */
     public void readClientData() throws IOException{
+
         try{
             String input = this.inFromStd.nextLine();
             if(input.equals("DONE")){
@@ -197,6 +199,7 @@ public class ClackClient{
         }catch (IOException ioe){
             System.err.println(ioe.getMessage());
         } 
+
     }
 
     /**
@@ -217,7 +220,6 @@ public class ClackClient{
         } catch (IOException ioe){System.err.println("Error writing data to server.");
         } catch (ClassNotFoundException cnfe){System.err.println("Class not found");}
     }
-
     /**
      * Prints the received data to the standard output
      */
