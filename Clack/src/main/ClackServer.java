@@ -73,8 +73,8 @@ public class ClackServer {
             this.inFromClient = new ObjectInputStream(clientSocket.getInputStream());
             while(!this.closeConnection){
                 this.receiveData();
+                dataToRecieveFromClient = dataToSendToClient;
                 this.sendData();
-
             }
             server.close();
             clientSocket.close();

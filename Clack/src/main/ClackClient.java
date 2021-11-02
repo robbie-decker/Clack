@@ -146,6 +146,7 @@ public class ClackClient{
             this.outToServer = new ObjectOutputStream(serverConnect.getOutputStream());
             this.inFromServer = new ObjectInputStream(serverConnect.getInputStream());
             this.inFromStd = new Scanner(System.in);
+            System.out.println("Client is now running..");
             while (!this.closeConnection) {
                 this.readClientData();
                 this.sendData();
@@ -177,7 +178,6 @@ public class ClackClient{
                     this.closeConnection = true;
                 }
                 else if(input.contains("SENDFILE")){
-                    // TODO get filename use regex
                     String filename = input.replace("SENDFILE", "").replace(" ", "");
                     try{   
                         this.dataToSendToServer = new FileClackData(this.userName, filename, ClackData.CONSTANT_SENDFILE);
@@ -189,15 +189,15 @@ public class ClackClient{
                 }
                 else if(input.equals("LISTUSERS")){
                         System.out.println("Implementation coming soon");
-                        //TODO WILL IMPLEMENT IN PART 3
                 }
                 else{
                     this.dataToSendToServer = new MessageClackData(this.userName, input, ClackData.CONSTANT_SENDMESSAGE);
+
                 }
             }catch (IOException ioe){
                 System.err.println(ioe.getMessage());
-            } 
-            
+            }
+
         }
         this.inFromStd.close();
     }
@@ -220,7 +220,6 @@ public class ClackClient{
         } catch (IOException ioe){System.err.println("Error writing data to server.");
         } catch (ClassNotFoundException cnfe){System.err.println("Class not found");}
     }
-
     /**
      * Prints the received data to the standard output
      */
