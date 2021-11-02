@@ -42,3 +42,91 @@ Will throw exception since username is empty
 
 ClackClient wrong = new ClackClient("Jimbo", "");
 Will throw exception since host name is empty
+
+---------------PART 3----------------------
+Case 1
+This tests was done on a single machine with localhost.
+
+Client:
+$ java -jar out/artifacts/ClackClient/ClackClient.jar robbie
+Client is now running..
+hello?
+hello?
+what is up?
+what is up?
+DONE
+DONE
+
+Server:
+$ java -jar out/artifacts/ClackServer_jar/ClackServer.jar
+Server now running on port: 7000
+New Connection from: /127.0.0.1
+Data from client: hello?
+Data from client: what is up?
+Data from client: DONE
+
+
+Chris did not have access to remote desktop (Free windows iso does not have this feature) so for these test cases we were using my laptop to connect to
+my desktop PC. This still shows off the two different machines connecting and communicating.
+
+Case 2 (No port number specified)
+Client:
+​​Roberts-MacBook-Pro:CS242-Project1 robbob$ java -jar out/artifacts/ClackClient/ClackClient.jar robbie@128.153.221.52
+Client is now running..
+is this a new connection?
+is this a new connection?
+wow!
+wow!
+DONE
+DONE
+
+Server:
+$ java -jar out/artifacts/ClackServer_jar/ClackServer.jar 
+Server now running on port: 7000
+New Connection from: /128.153.167.78
+Data from client: is this a new connection?
+Data from client: wow!
+Data from client: DONE
+
+Case 3 (With port number)
+Client:
+Roberts-MacBook-Pro:CS242-Project1 robbob$ java -jar out/artifacts/ClackClient/ClackClient.jar robbie@128.153.221.52:5000
+Client is now running..
+Using a new port num!
+Using a new port num!
+COOOOOL!!!!!!
+COOOOOL!!!!!!
+DONE
+DONE
+
+
+Server:
+$ java -jar out/artifacts/ClackServer_jar/ClackServer.jar 5000
+Server now running on port: 5000
+New Connection from: /128.153.167.78
+Data from client: Using a new port num!
+Data from client: COOOOOL!!!!!!
+Data from client: DONE
+
+
+Extra tests ClackClient (all done on localhost)
+
+With no args:
+
+Client:
+$ java -jar out/artifacts/ClackClient/ClackClient.jar
+Client is now running..
+hi
+hi
+It is still working!
+It is still working!
+DONE
+DONE
+
+Server:
+$ java -jar out/artifacts/ClackServer_jar/ClackServer.jar
+Server now running on port: 7000
+New Connection from: /127.0.0.1
+Data from client: hi
+Data from client: It is still working!
+Data from client: DONE
