@@ -13,9 +13,13 @@ public class ClientSideServerListener implements Runnable{
      * Constructor that initializes ClientSideServerListener with a ClackClient data
       * @param client ClackClient object representing a user.
      */
-    ClientSideServerListener(ClackClient client){
+    public ClientSideServerListener(ClackClient client){
         this.client = client;
     }
+
+    /**
+     * Runs the class
+     */
     @Override
     public void run() {
         while(!this.client.getCloseConnection()){

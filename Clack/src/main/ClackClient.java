@@ -147,12 +147,12 @@ public class ClackClient{
             this.outToServer = new ObjectOutputStream(serverConnect.getOutputStream());
             this.inFromServer = new ObjectInputStream(serverConnect.getInputStream());
             this.inFromStd = new Scanner(System.in);
-            System.out.println("Client is now running..");
+            ClientSideServerListener listener = new ClientSideServerListener(this);
+            Thread current = new Thread(listener);
+            current.start();
             while (!this.closeConnection) {
                 this.readClientData();
                 this.sendData();
-                this.receiveData();
-                this.printData();
             }
             serverConnect.close();
             this.inFromStd.close();
