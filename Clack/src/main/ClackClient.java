@@ -34,16 +34,6 @@ public class ClackClient{
      * @param args
      */
 
-
-    /*public static void main(String[] args){
-        try {
-            ClackClient client = new ClackClient();
-            client.start();
-        }catch(IOException ioe){
-            System.err.println(ioe.getMessage());
-        }
-    }*/
-
     /**
      * Main method for running a ClackClient object that takes a paramater, given a:
      * <username> or a
@@ -267,6 +257,16 @@ public class ClackClient{
     public int getPort(){
     return this.port;
 }
+
+    /**
+     * Accessor for a variable determining if the connection is closed.
+     *
+     * @return boolean representing a closed connection
+     */
+    public boolean getCloseConnection(){
+        return this.closeConnection;
+    }
+
 
     /**
      * Generates a hash code for the object.

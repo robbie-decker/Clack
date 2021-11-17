@@ -120,7 +120,7 @@ hi
 hi
 It is still working!
 It is still working!
-DONE
+DONE;
 DONE
 
 Server:
