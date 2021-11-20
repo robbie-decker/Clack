@@ -5,6 +5,7 @@ import main.ClackClient;
 /**
  * A class responsible for receiving data from the server and printing it parallel to the ClackClient Class.
  *
+ * @author Chris Hickman
  */
 public class ClientSideServerListener implements Runnable{
     private ClackClient client;

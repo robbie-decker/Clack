@@ -12,7 +12,7 @@ import data.*;
 public class ClackServer {
     private int port;
     private boolean closeConnection;
-    private ClackData dataToRecieveFromClient;
+    private ClackData dataToReceiveFromClient;
     private ClackData dataToSendToClient;
     private ObjectInputStream inFromClient;
     private ObjectOutputStream outToClient;
@@ -66,7 +66,7 @@ public class ClackServer {
     public ClackServer(int port) throws IllegalArgumentException{
         this.port = port;
         this.closeConnection = false;
-        this.dataToRecieveFromClient = null;
+        this.dataToReceiveFromClient = null;
         this.dataToSendToClient = null;
         this.inFromClient = null;
         this.outToClient = null;
@@ -78,7 +78,7 @@ public class ClackServer {
     public ClackServer(){
         this.port = defaultPort;
         this.closeConnection = false;
-        this.dataToRecieveFromClient = null;
+        this.dataToReceiveFromClient = null;
         this.dataToSendToClient = null;
     }
     /**
@@ -99,7 +99,7 @@ public class ClackServer {
             while(!this.closeConnection){
                 this.receiveData();
 
-                this.dataToSendToClient = this.dataToRecieveFromClient;
+                this.dataToSendToClient = this.dataToReceiveFromClient;
 
                 this.sendData();
             }
@@ -118,9 +118,9 @@ public class ClackServer {
      */
     public void receiveData(){
         try{
-            this.dataToRecieveFromClient = (ClackData)inFromClient.readObject();
-            System.out.println("Data from client: " + dataToRecieveFromClient.getData());
-            if(dataToRecieveFromClient.getData().equals("DONE"))
+            this.dataToReceiveFromClient = (ClackData)inFromClient.readObject();
+            System.out.println("Data from client: " + dataToReceiveFromClient.getData());
+            if(dataToReceiveFromClient.getData().equals("DONE"))
                 this.closeConnection = true;
         }catch (IOException ioe){System.err.println("Error reading data from client");
         }catch (ClassNotFoundException cnfe){System.err.println("Class not found");}
