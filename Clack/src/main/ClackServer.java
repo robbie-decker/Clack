@@ -1,6 +1,8 @@
 package main;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.*;
+import java.util.ArrayList;
 
 import data.*;
 /**
@@ -12,6 +14,7 @@ import data.*;
 public class ClackServer {
     private int port;
     private boolean closeConnection;
+    private ArrayList<ServerSideClientIO> serverSideClientIOList;
     public static final int defaultPort = 7000;
 
     /**
@@ -62,6 +65,7 @@ public class ClackServer {
     public ClackServer(int port) throws IllegalArgumentException{
         this.port = port;
         this.closeConnection = false;
+        this.serverSideClientIOList = new ArrayList<ServerSideClientIO>();
     }
 
     /**
@@ -70,6 +74,7 @@ public class ClackServer {
     public ClackServer(){
         this.port = defaultPort;
         this.closeConnection = false;
+        this.serverSideClientIOList = new ArrayList<ServerSideClientIO>();
     }
     /**
      * Start server session
@@ -81,10 +86,14 @@ public class ClackServer {
         try{
             ServerSocket server = new ServerSocket(this.port);
             System.out.println("Server now running on port: " + this.port);
-            Socket clientSocket = server.accept();
-            System.out.println("New Connection from: " + clientSocket.getInetAddress());
 
             while(!this.closeConnection){
+                Socket clientSocket = server.accept();
+                System.out.println("New Connection from: " + clientSocket.getInetAddress());
+                serverSideClientIOList.add( new ServerSideClientIO(this, clientSocket));
+                Thread clientThread = new Thread(new ServerSideClientIO(this, clientSocket));
+                clientThread.start();
+
                 // this.receiveData();
 
                 // this.dataToSendToClient = this.dataToReceiveFromClient;
@@ -92,13 +101,28 @@ public class ClackServer {
                 // this.sendData();
             }
             server.close();
-            clientSocket.close();
+            for(int i = 0; i < serverSideClientIOList.size(); i++){
+                serverSideClientIOList.get(i).clientSocket.close();
+            }
         }
         catch(UnknownHostException uhe){System.err.println(uhe.getMessage());}
         catch(NoRouteToHostException nrhe){System.err.println(nrhe.getMessage());}
         catch(ConnectException ce){System.err.println(ce.getMessage());}
         catch(IOException ioe){System.err.println(ioe.getMessage());}
     }
+    
+    
+    public synchronized void broadcast(ClackData dataToBroadcastToClients){
+        for(int i = 0; i < serverSideClientIOList.size(); i++){
+            serverSideClientIOList.get(i).setDataToSendToClient(dataToBroadcastToClients);
+            serverSideClientIOList.get(i).sendData();
+        }
+    }
+
+    public synchronized void remove(ServerSideClientIO clientIO){
+        serverSideClientIOList.remove(clientIO);
+    }
+
     /**
      * Accessor for the port number
      * 
