@@ -12,10 +12,6 @@ import data.*;
 public class ClackServer {
     private int port;
     private boolean closeConnection;
-    private ClackData dataToReceiveFromClient;
-    private ClackData dataToSendToClient;
-    private ObjectInputStream inFromClient;
-    private ObjectOutputStream outToClient;
     public static final int defaultPort = 7000;
 
     /**
@@ -66,10 +62,6 @@ public class ClackServer {
     public ClackServer(int port) throws IllegalArgumentException{
         this.port = port;
         this.closeConnection = false;
-        this.dataToReceiveFromClient = null;
-        this.dataToSendToClient = null;
-        this.inFromClient = null;
-        this.outToClient = null;
     }
 
     /**
@@ -78,8 +70,6 @@ public class ClackServer {
     public ClackServer(){
         this.port = defaultPort;
         this.closeConnection = false;
-        this.dataToReceiveFromClient = null;
-        this.dataToSendToClient = null;
     }
     /**
      * Start server session
@@ -94,44 +84,20 @@ public class ClackServer {
             Socket clientSocket = server.accept();
             System.out.println("New Connection from: " + clientSocket.getInetAddress());
 
-            this.outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
-            this.inFromClient = new ObjectInputStream(clientSocket.getInputStream());
             while(!this.closeConnection){
-                this.receiveData();
+                // this.receiveData();
 
-                this.dataToSendToClient = this.dataToReceiveFromClient;
+                // this.dataToSendToClient = this.dataToReceiveFromClient;
 
-                this.sendData();
+                // this.sendData();
             }
             server.close();
             clientSocket.close();
-            this.inFromClient.close();
-            this.outToClient.close();
         }
         catch(UnknownHostException uhe){System.err.println(uhe.getMessage());}
         catch(NoRouteToHostException nrhe){System.err.println(nrhe.getMessage());}
         catch(ConnectException ce){System.err.println(ce.getMessage());}
         catch(IOException ioe){System.err.println(ioe.getMessage());}
-    }
-    /**
-     * Receives data from the client
-     */
-    public void receiveData(){
-        try{
-            this.dataToReceiveFromClient = (ClackData)inFromClient.readObject();
-            System.out.println("Data from client: " + dataToReceiveFromClient.getData());
-            if(dataToReceiveFromClient.getData().equals("DONE"))
-                this.closeConnection = true;
-        }catch (IOException ioe){System.err.println("Error reading data from client");
-        }catch (ClassNotFoundException cnfe){System.err.println("Class not found");}
-     }
-    /**
-     * Sends data to client
-     */
-    public void sendData(){
-        try{
-            outToClient.writeObject(this.dataToSendToClient);
-        }catch(IOException ioe){System.err.println(ioe.getMessage());}
     }
     /**
      * Accessor for the port number
