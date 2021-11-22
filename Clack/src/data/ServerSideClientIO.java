@@ -24,7 +24,7 @@ public class ServerSideClientIO implements Runnable{
     private ObjectInputStream inFromClient;
     private ObjectOutputStream outToClient;
     private ClackServer server;
-    private Socket clientSocket;
+    public Socket clientSocket;
 
     /**
      * Constructor for ServerSideClient, takes in the following parameters:
@@ -53,7 +53,7 @@ public class ServerSideClientIO implements Runnable{
             inFromClient =  new ObjectInputStream(this.clientSocket.getInputStream());
             outToClient =  new ObjectOutputStream(this.clientSocket.getOutputStream());
             while(!this.closeConnection){
-                this.server.receiveData();
+                this.receiveData();
                 //this.server.broadcast();
             }
 
