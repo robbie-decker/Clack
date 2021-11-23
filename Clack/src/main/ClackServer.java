@@ -90,9 +90,11 @@ public class ClackServer {
             while(!this.closeConnection){
                 Socket clientSocket = server.accept();
                 System.out.println("New Connection from: " + clientSocket.getInetAddress());
-                serverSideClientIOList.add( new ServerSideClientIO(this, clientSocket));
-                Thread clientThread = new Thread(new ServerSideClientIO(this, clientSocket));
+                ServerSideClientIO clientIO = new ServerSideClientIO(this, clientSocket);
+                serverSideClientIOList.add(clientIO);
+                Thread clientThread = new Thread(clientIO);
                 clientThread.start();
+                
 
                 // this.receiveData();
 
@@ -111,7 +113,11 @@ public class ClackServer {
         catch(IOException ioe){System.err.println(ioe.getMessage());}
     }
     
-    
+    /**
+     * Broadcast a message to all clients
+     * 
+     * @param dataToBroadcastToClients the message to send to all clients
+     */
     public synchronized void broadcast(ClackData dataToBroadcastToClients){
         for(int i = 0; i < serverSideClientIOList.size(); i++){
             serverSideClientIOList.get(i).setDataToSendToClient(dataToBroadcastToClients);
@@ -119,8 +125,21 @@ public class ClackServer {
         }
     }
 
+    /**
+     * Remove a specific object from the Array List serverSideClientIOList
+     * 
+     * @param clientIO The object you wish to remove from serverSideClientIOList
+     */
     public synchronized void remove(ServerSideClientIO clientIO){
         serverSideClientIOList.remove(clientIO);
+    }
+
+    public ClackData listUsers(){
+        String users = "";
+        for(int i = 0; i < serverSideClientIOList.size(); i++){
+            users = serverSideClientIOList.get(i).getDataFromClient().getUserName() + ", " + users;
+        }
+        return new MessageClackData("anon", users, 0);
     }
 
     /**
