@@ -16,8 +16,8 @@ public class TestClackServer {
 
         // test1.start();          //This call does nothing since there is only a declaration
 
-        test1.receiveData();    //This call does nothing since there is only a declaration
-        test1.sendData();       //This call does nothing since there is only a declaration
+       // test1.receiveData();    //This call does nothing since there is only a declaration
+        // test1.sendData();       //This call does nothing since there is only a declaration
         System.out.println("test1 port: " + test1.getPort()); 
         System.out.println("test1 hash: " + test1.hashCode());
         System.out.println("test1 string: " + test1.toString());
