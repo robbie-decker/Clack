@@ -24,7 +24,7 @@ public class ServerSideClientIO implements Runnable{
     private ObjectInputStream inFromClient;
     private ObjectOutputStream outToClient;
     private ClackServer server;
-    private Socket clientSocket;
+    public Socket clientSocket;
 
     /**
      * Constructor for ServerSideClient, takes in the following parameters:
@@ -50,11 +50,11 @@ public class ServerSideClientIO implements Runnable{
     @Override
     public void run() {
         try{
-            inFromClient =  new ObjectInputStream(this.clientSocket.getInputStream());
-            outToClient =  new ObjectOutputStream(this.clientSocket.getOutputStream());
+            this.inFromClient =  new ObjectInputStream(this.clientSocket.getInputStream());
+            this.outToClient =  new ObjectOutputStream(this.clientSocket.getOutputStream());
             while(!this.closeConnection){
-                this.server.receiveData();
-                //this.server.broadcast();
+                this.receiveData();
+                this.server.broadcast(this.dataToReceiveFromClient);
             }
 
         }catch(UnknownHostException uhe){System.err.println(uhe.getMessage());}
@@ -69,7 +69,7 @@ public class ServerSideClientIO implements Runnable{
      */
     public void sendData(){
         try{
-            outToClient.writeObject(this.dataToSendToClient);
+            this.outToClient.writeObject(this.dataToSendToClient);
         }catch(IOException ioe){System.err.println(ioe.getMessage());}
     }
 
@@ -87,11 +87,19 @@ public class ServerSideClientIO implements Runnable{
         try{
             this.dataToReceiveFromClient = (ClackData)inFromClient.readObject();
             System.out.println("Data from client: " + dataToReceiveFromClient.getData());
-            if(dataToReceiveFromClient.getData().equals("DONE")) {
-               // this.server.remove();
+            if(this.dataToReceiveFromClient.getData().equals("DONE")) {
+                this.server.remove(this);
                 this.closeConnection = true;
+            }
+            if(this.dataToReceiveFromClient.getData().equals("LISTUSERS")){
+                // this.outToClient.writeObject(this.server.listUsers());
+                this.dataToReceiveFromClient = this.server.listUsers();
             }
         }catch (IOException ioe){System.err.println("Error reading data from client");
         }catch (ClassNotFoundException cnfe){System.err.println("Class not found");}
+    }
+
+    public ClackData getDataFromClient(){
+        return this.dataToReceiveFromClient;
     }
 }
