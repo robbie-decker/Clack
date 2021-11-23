@@ -130,3 +130,26 @@ New Connection from: /127.0.0.1
 Data from client: hi
 Data from client: It is still working!
 Data from client: DONE
+
+----------------Part-4-------------------
+We need two classes for threading because we need separate threads running for each client, and then one for the user. 
+This can only be achieved by multi-threading, which must be done with separate classes. We could have used anonymous classes
+as well, but this is more efficient.
+
+There should be a separate class to receive data from the server because the server needs to be handling the clients, while when
+each new client receives a connection, it needs access to that data. All the client needs to do is send data. This class is called
+a "listener" because it's listening for data from the server.
+
+We need a separate thread for each client because we want the clients to be running concurrently. We could technically handle
+all clients in the server with an anonymous class, but this would be inefficient, it's better to abstractly create another
+class and put it into a data structure. ClientSideServerListener is different from ServerSideClientIO because the Client side 
+receives data from the client and sends it to the server, while the server side broadcasts the data to all the clients.
+
+Broadcast and remove are synchronized so that you can close an object while the server is running, therefore allowing
+the server to continue broadcasting. We're accessing a shared object, so we have to release the lock if broadcast is continuously
+running.
+
+The new methods implemented to get the LISTUSERS functionality working is the listUsers method in ClackServer. This goes through the ListArray, checks if the data is null, and if it is not null then it appends the userName using the ClackData method getUserName to the sting users. Once we iterate through the entire ListArray we used the passed in value clientIO to set the dataToSendToClient of this object to the MessageClackData object with the all the users as the message. What is cool about doing it this way is that it will only send the message to the client that asked for the LISTUSERS info. The listUsers method was then implemented in the recieveData method in ServerSideClientIO where if the data read equals "LISTUSERS" we call the listUsers method from the server passing in the ServerSideClientIO object. 
+
+
+All tests were screenshotted and put into the Clack/src/test/Part4-images folder.

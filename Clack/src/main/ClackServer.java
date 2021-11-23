@@ -126,7 +126,11 @@ public class ClackServer {
     public synchronized void remove(ServerSideClientIO clientIO){
         serverSideClientIOList.remove(clientIO);
     }
-
+    /**
+     * List all the current users connected to the server
+     * 
+     * @param clientIO The object asking for the LISTUSERS info
+     */
     public void listUsers(ServerSideClientIO clientIO){
         String users = "";
         for(int i = 0; i < serverSideClientIOList.size(); i++){
