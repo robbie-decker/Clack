@@ -190,10 +190,6 @@ public class ClackClient{
                     System.err.println("The file: " + filename +  " is not available: " + fnfe.getMessage());
                 }
             }
-            else if(input.equals("LISTUSERS")){
-                    System.out.println("Implementation coming soon");
-                    //TODO WILL IMPLEMENT IN PART 3
-            }
             else{
                 this.dataToSendToServer = new MessageClackData(this.userName, input, ClackData.CONSTANT_SENDMESSAGE);
             }
@@ -252,7 +248,7 @@ public class ClackClient{
     /**
      * Accessor for the port number.
      *
-     * @return POrt number on server connected to.
+     * @return Port number on server connected to.
      */
     public int getPort(){
     return this.port;
