@@ -86,7 +86,7 @@ public class ServerSideClientIO implements Runnable{
     public void receiveData(){
         try{
             this.dataToReceiveFromClient = (ClackData)inFromClient.readObject();
-            System.out.println("Data from client: " + dataToReceiveFromClient.getData());
+            System.out.println("Data from client: " + this.dataToReceiveFromClient.getData());
             if(this.dataToReceiveFromClient.getData().equals("DONE")) {
                 this.server.remove(this);
                 this.closeConnection = true;
