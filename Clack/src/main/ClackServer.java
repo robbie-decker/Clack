@@ -94,13 +94,6 @@ public class ClackServer {
                 serverSideClientIOList.add(clientIO);
                 Thread clientThread = new Thread(clientIO);
                 clientThread.start();
-                
-
-                // this.receiveData();
-
-                // this.dataToSendToClient = this.dataToReceiveFromClient;
-
-                // this.sendData();
             }
             server.close();
             for(int i = 0; i < serverSideClientIOList.size(); i++){
@@ -134,12 +127,18 @@ public class ClackServer {
         serverSideClientIOList.remove(clientIO);
     }
 
-    public ClackData listUsers(){
+    public void listUsers(ServerSideClientIO clientIO){
         String users = "";
         for(int i = 0; i < serverSideClientIOList.size(); i++){
-            users = serverSideClientIOList.get(i).getDataFromClient().getUserName() + ", " + users;
+            if(serverSideClientIOList.get(i).getDataFromClient() == null){
+                users = users + ", Unknown";
+            }
+            else{
+                users = serverSideClientIOList.get(i).getDataFromClient().getUserName() + ", " + users;
+            }
         }
-        return new MessageClackData("anon", users, 0);
+        clientIO.setDataToSendToClient(new MessageClackData("anon", users, 0));
+        clientIO.sendData();
     }
 
     /**

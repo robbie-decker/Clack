@@ -92,8 +92,7 @@ public class ServerSideClientIO implements Runnable{
                 this.closeConnection = true;
             }
             if(this.dataToReceiveFromClient.getData().equals("LISTUSERS")){
-                // this.outToClient.writeObject(this.server.listUsers());
-                this.dataToReceiveFromClient = this.server.listUsers();
+                this.server.listUsers(this);
             }
         }catch (IOException ioe){System.err.println("Error reading data from client");
         }catch (ClassNotFoundException cnfe){System.err.println("Class not found");}
