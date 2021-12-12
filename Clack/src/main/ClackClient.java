@@ -91,9 +91,10 @@ public class ClackClient extends Application {
                         client = new ClackClient(username, m[0], Integer.parseInt(m[1]));
                     } else client = new ClackClient(username, m[0]);
                 } else client = new ClackClient(username);
-                launch(args);
-            //} catch (IOException ioe) {
-              //  System.err.println(ioe.getMessage());
+                client.start();
+                // launch(args);
+            } catch (IOException ioe) {
+                System.err.println(ioe.getMessage());
             } catch (NumberFormatException nfe) {
                 System.err.println("illegal port number");
             }
@@ -225,11 +226,7 @@ public class ClackClient extends Application {
         Scene scene = new Scene(root, 500, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
-//        try {
-//            start();
-//        }catch(IOException ioe){
-//            System.err.println("Issue with IO.");
-//        }
+
 
     }
 
@@ -251,10 +248,10 @@ public class ClackClient extends Application {
             ClientSideServerListener listener = new ClientSideServerListener(this);
             Thread current = new Thread(listener);
             current.start();
-//            while (!this.closeConnection) {
-//                this.readClientData();
-//                this.sendData();
-//            }
+          while (!this.closeConnection) {
+                this.readClientData();
+                this.sendData();
+            }
             serverConnect.close();
             this.inFromStd.close();
             this.outToServer.close();
@@ -328,8 +325,8 @@ public class ClackClient extends Application {
      * Prints the received data to the standard output
      */
     public void printData(){
-        if(this.dataToReceiveFromServer != null) {
-            addMessage(this.userName, this.dataToReceiveFromServer.getData());
+        if(!this.dataToReceiveFromServer.equals(null)) {
+           // addMessage(this.userName, this.dataToReceiveFromServer.getData());
             System.out.println(this.dataToReceiveFromServer.getData());
 
         }else
