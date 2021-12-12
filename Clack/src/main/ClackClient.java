@@ -3,9 +3,25 @@ import java.io.File;
 import java.io.*;
 import java.net.*;
 import java.util.InputMismatchException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 import data.*;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * A class that represents a client user.
@@ -13,7 +29,7 @@ import data.*;
  * @author Chris Hickman
  */
 
-public class ClackClient{
+public class ClackClient extends Application {
     private String userName;
     private String hostName;
     private int port;
@@ -23,6 +39,14 @@ public class ClackClient{
     private ClackData dataToReceiveFromServer;
     private ObjectInputStream inFromServer;
     private ObjectOutputStream outToServer;
+
+
+    private Button sendButton = new Button("Send");
+    private TextField userInput = new TextField();
+    private ScrollPane messages = new ScrollPane();
+    public VBox messagesInner = new VBox();
+    private final Button ISDONE = new Button("Exit");
+
 
 
     public static final int defaultPort = 7000;
@@ -45,13 +69,14 @@ public class ClackClient{
      */
     public static void main(String[] args) {
         if (args.length < 1) {
-            try {
+            //try {
                 ClackClient client = new ClackClient();
-                client.start();
-            } catch (IOException ioe) {
-                System.err.println(ioe.getMessage());
-            }
-        } else {
+                launch(args);
+//            } catch (IOException ioe) {
+//                System.err.println(ioe.getMessage());
+//            }
+        }
+        else {
             try {
                 ClackClient client;
                 String username = args[0];
@@ -66,9 +91,9 @@ public class ClackClient{
                         client = new ClackClient(username, m[0], Integer.parseInt(m[1]));
                     } else client = new ClackClient(username, m[0]);
                 } else client = new ClackClient(username);
-                client.start();
-            } catch (IOException ioe) {
-                System.err.println(ioe.getMessage());
+                launch(args);
+            //} catch (IOException ioe) {
+              //  System.err.println(ioe.getMessage());
             } catch (NumberFormatException nfe) {
                 System.err.println("illegal port number");
             }
@@ -131,6 +156,82 @@ public class ClackClient{
     public ClackClient() {
     this("anon");
 }
+    public void start(Stage primaryStage){
+        AnchorPane root = new AnchorPane();
+
+        root.getChildren().addAll(sendButton, userInput, messages, ISDONE);
+        AnchorPane.setBottomAnchor(userInput, 15.0);
+        AnchorPane.setLeftAnchor(userInput, 50.0);
+        userInput.setMinWidth(370);
+
+        messages.setContent(messagesInner);
+        messages.setMinHeight(500);
+        messages.setMinWidth(300);
+
+
+        AnchorPane.setBottomAnchor(sendButton, 15.0);
+        AnchorPane.setLeftAnchor(sendButton, 420.0);
+        sendButton.setMinWidth(30);
+
+        AnchorPane.setBottomAnchor(messages, 45.0);
+        AnchorPane.setRightAnchor(messages, 20.0);
+
+        AnchorPane.setTopAnchor(ISDONE, 25.0);
+        AnchorPane.setRightAnchor(ISDONE, 20.0);
+
+
+
+        this.closeConnection = false;
+        try {
+            Socket serverConnect = new Socket(this.hostName, this.port);
+            this.outToServer = new ObjectOutputStream(serverConnect.getOutputStream());
+            this.inFromServer = new ObjectInputStream(serverConnect.getInputStream());
+            this.inFromStd = new Scanner(System.in);
+            ClientSideServerListener listener = new ClientSideServerListener(this);
+            Thread current = new Thread(listener);
+              current.start();
+
+            ISDONE.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    exit();
+                    try {
+                        serverConnect.close();
+                    }catch(IOException ioe){System.err.println("Issue with IO");}
+                }
+            });
+
+//            this.inFromStd.close();
+//            this.outToServer.close();
+//            this.inFromServer.close();
+        } catch (IOException ioe){ System.err.println("Issue with IO.");
+        }
+
+        sendButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    readClientData();
+                    sendData();
+                }catch(IOException ioe) {
+                    System.err.println("issue with IO");
+                     }
+            }
+        });
+
+
+
+
+        Scene scene = new Scene(root, 500, 600);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+//        try {
+//            start();
+//        }catch(IOException ioe){
+//            System.err.println("Issue with IO.");
+//        }
+
+    }
 
     /**
      * Starts a connection with a server at the port number defaultPort.
@@ -150,15 +251,16 @@ public class ClackClient{
             ClientSideServerListener listener = new ClientSideServerListener(this);
             Thread current = new Thread(listener);
             current.start();
-            while (!this.closeConnection) {
-                this.readClientData();
-                this.sendData();
-            }
+//            while (!this.closeConnection) {
+//                this.readClientData();
+//                this.sendData();
+//            }
             serverConnect.close();
             this.inFromStd.close();
             this.outToServer.close();
             this.inFromServer.close();
-        } catch (IOException ioe){ System.err.println("Issue with IO.");
+
+         } catch (IOException ioe){ System.err.println("Issue with IO.");
         }
 
         }
@@ -171,15 +273,18 @@ public class ClackClient{
      * LISTUSERS - to list all users
      * @throws IOException
      */
-    public void readClientData() throws IOException{
+    public void readClientData() throws IOException {
 
         try{
-            String input = this.inFromStd.nextLine();
-            if(input.equals("DONE")){
-                this.dataToSendToServer = new MessageClackData(this.userName, input, ClackData.CONSTANT_LOGOUT);
-                this.closeConnection = true;
-            }
-            else if(input.contains("SENDFILE")){
+           // String input = this.inFromStd.nextLine();
+            String input = userInput.getText();
+//            if(input.equals("DONE")){
+//                this.dataToSendToServer = new MessageClackData(this.userName, input, ClackData.CONSTANT_LOGOUT);
+//                this.closeConnection = true;
+//                Platform.exit();
+//            }
+// else
+                if(input.contains("SENDFILE")){
                 // TODO get filename use regex
                 String filename = input.replace("SENDFILE", "").replace(" ", "");
                 try{   
@@ -192,6 +297,7 @@ public class ClackClient{
             }
             else{
                 this.dataToSendToServer = new MessageClackData(this.userName, input, ClackData.CONSTANT_SENDMESSAGE);
+                userInput.setText("");
             }
         }catch (IOException ioe){
             System.err.println(ioe.getMessage());
@@ -214,6 +320,7 @@ public class ClackClient{
     public void receiveData(){
        try {
         this.dataToReceiveFromServer =  (ClackData)inFromServer.readObject();
+
         } catch (IOException ioe){System.err.println("Error writing data to server.");
         } catch (ClassNotFoundException cnfe){System.err.println("Class not found");}
     }
@@ -221,11 +328,33 @@ public class ClackClient{
      * Prints the received data to the standard output
      */
     public void printData(){
-        if(this.dataToReceiveFromServer != null)
+        if(this.dataToReceiveFromServer != null) {
+            addMessage(this.userName, this.dataToReceiveFromServer.getData());
             System.out.println(this.dataToReceiveFromServer.getData());
-        else   
+
+        }else
             System.out.println("Data from server is null");
     }
+
+    private void addMessage(String userName, String message){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                messagesInner.getChildren().add(new Label(userName + ": " + message));
+            }
+        });
+    }
+    private void exit(){
+                this.dataToSendToServer = new MessageClackData(this.userName, (String)"DONE", ClackData.CONSTANT_LOGOUT);
+                this.closeConnection = true;
+        try {
+                     this.inFromStd.close();
+                     this.outToServer.close();
+                     this.inFromServer.close();
+                 }catch(IOException ioe){System.err.println("Issue with IO");}
+                 Platform.exit();
+    }
+
 
     /**
      * Accessor for user name.

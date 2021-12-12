@@ -2,6 +2,7 @@ package test;
 
 import java.io.IOException;
 
+import javafx.stage.Stage;
 import main.ClackClient;
 /**
  * A class to test ClackClient.
@@ -46,7 +47,7 @@ public class TestClackClient {
         System.out.println(cc2.hashCode() + " = " + cc5.hashCode());
 
         System.out.println("\n\n\n");
-        cc1.start(); // Type in SENDFILE, DONE LISTUSERS, and other to test readClientData logic
+        // cc1.start(new Stage()); // Type in SENDFILE, DONE LISTUSERS, and other to test readClientData logic
         // LISTUSERS
         // Implementation coming soon
         // SENDFILE Clack/src/test/Part2_document.txt
