@@ -11,17 +11,20 @@ import data.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 
 /**
  * A class that represents a client user.
@@ -41,12 +44,18 @@ public class ClackClient extends Application {
     private ObjectOutputStream outToServer;
 
 
+
+        // items for javafx
     private Button sendButton = new Button("Send");
     private TextField userInput = new TextField();
     private ScrollPane messages = new ScrollPane();
-    public VBox messagesInner = new VBox();
+    private VBox messagesInner = new VBox();
+    //private VBox displayUsers = new VBox();
+    private TextField displayUsers = new TextField();
     private final Button ISDONE = new Button("Exit");
-
+    private ImageView fileImage = new ImageView(new Image("/main/img/file.png", 50, 50, true, true));
+    private ImageView media1Image = new ImageView(new Image("/main/img/file.png", 50, 50, true, true));
+    private ImageView media2Image = new ImageView(new Image("/main/img/file.png", 50, 50, true, true));
 
 
     public static final int defaultPort = 7000;
@@ -91,7 +100,7 @@ public class ClackClient extends Application {
                         client = new ClackClient(username, m[0], Integer.parseInt(m[1]));
                     } else client = new ClackClient(username, m[0]);
                 } else client = new ClackClient(username);
-                client.launch(args);
+                launch(args);
             //} catch (IOException ioe) {
               //  System.err.println(ioe.getMessage());
             } catch (NumberFormatException nfe) {
@@ -159,27 +168,48 @@ public class ClackClient extends Application {
     public void start(Stage primaryStage){
         AnchorPane root = new AnchorPane();
 
-        root.getChildren().addAll(sendButton, userInput, messages, ISDONE);
+        root.getChildren().addAll(sendButton, userInput, messages, ISDONE, fileImage, media1Image, media2Image, displayUsers);
         AnchorPane.setBottomAnchor(userInput, 15.0);
         AnchorPane.setLeftAnchor(userInput, 50.0);
         userInput.setMinWidth(370);
 
         messages.setContent(messagesInner);
         messages.setMinHeight(500);
+        messages.setMaxWidth(300);
+        messages.setMaxHeight(500);
         messages.setMinWidth(300);
+        AnchorPane.setBottomAnchor(messages, 45.0);
+        AnchorPane.setRightAnchor(messages, 20.0);
 
 
         AnchorPane.setBottomAnchor(sendButton, 15.0);
         AnchorPane.setLeftAnchor(sendButton, 420.0);
         sendButton.setMinWidth(30);
 
-        AnchorPane.setBottomAnchor(messages, 45.0);
-        AnchorPane.setRightAnchor(messages, 20.0);
 
         AnchorPane.setTopAnchor(ISDONE, 25.0);
         AnchorPane.setRightAnchor(ISDONE, 20.0);
 
+         AnchorPane.setLeftAnchor(fileImage, 50.0);
+         AnchorPane.setBottomAnchor(fileImage, 75.0);
+         fileImage.setPickOnBounds(true);
 
+
+
+        AnchorPane.setLeftAnchor(media1Image, 50.0);
+        AnchorPane.setBottomAnchor(media1Image, 150.0);
+
+        AnchorPane.setLeftAnchor(media2Image, 50.0);
+        AnchorPane.setBottomAnchor(media2Image, 225.0);
+
+        AnchorPane.setLeftAnchor(displayUsers, 50.0);
+        AnchorPane.setTopAnchor(displayUsers, 55.0);
+        displayUsers.setMinHeight(200);
+        displayUsers.setMaxHeight(200);
+        displayUsers.setMinWidth(100);
+        displayUsers.setMaxWidth(100);
+        displayUsers.setStyle("-fx-background-color:red");
+       //  listOfUsers();
 
         this.closeConnection = false;
         try {
@@ -197,7 +227,20 @@ public class ClackClient extends Application {
                     exit();
                     try {
                         serverConnect.close();
-                    }catch(IOException ioe){System.err.println("Issue with IO");}
+                    } catch (IOException ioe) {
+                        System.err.println("Issue with IO");
+                    }
+                }
+            });
+            fileImage.setOnMouseClicked(new EventHandler() {
+                @Override
+                public void handle(Event event) {
+                    TextInputDialog a = new TextInputDialog();
+                    a.setContentText("Enter File Name");
+                    a.show();
+                    a.getEditor().getText();
+                    dataToSendToServer = new FileClackData(userName, a.getEditor().getText(), ClackData.CONSTANT_SENDFILE);
+
                 }
             });
 
@@ -344,6 +387,26 @@ public class ClackClient extends Application {
             }
         });
     }
+
+    public void listOfUsers(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                    try {
+                        outToServer.writeObject(new MessageClackData(userName, "LISTUSERS", 0));
+                        String s;
+                    //    receiveData();
+                        s = dataToReceiveFromServer.getData();
+                        displayUsers.setText(s);
+                    }catch (IOException ioe){ ioe.getMessage();}
+                        //catch(InterruptedException ie){ ie.getMessage();}
+                }
+        });
+    }
+
+
+
+
     private void exit(){
                 this.dataToSendToServer = new MessageClackData(this.userName, (String)"DONE", ClackData.CONSTANT_LOGOUT);
                 this.closeConnection = true;

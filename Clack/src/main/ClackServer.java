@@ -131,6 +131,8 @@ public class ClackServer {
      * 
      * @param clientIO The object asking for the LISTUSERS info
      */
+  //  public String listUsers(){
+
     public void listUsers(ServerSideClientIO clientIO){
         String users = "";
         for(int i = 0; i < serverSideClientIOList.size(); i++){
@@ -138,7 +140,7 @@ public class ClackServer {
                 users = users + ", Unknown";
             }
             else{
-                users = serverSideClientIOList.get(i).getDataFromClient().getUserName() + ", " + users;
+                users = serverSideClientIOList.get(i).getDataFromClient().getUserName() + "\n" + users;
             }
         }
         clientIO.setDataToSendToClient(new MessageClackData("anon", users, 0));
