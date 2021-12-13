@@ -91,7 +91,7 @@ public class ClackClient extends Application {
                         client = new ClackClient(username, m[0], Integer.parseInt(m[1]));
                     } else client = new ClackClient(username, m[0]);
                 } else client = new ClackClient(username);
-                launch(args);
+                client.launch(args);
             //} catch (IOException ioe) {
               //  System.err.println(ioe.getMessage());
             } catch (NumberFormatException nfe) {
@@ -329,7 +329,7 @@ public class ClackClient extends Application {
      */
     public void printData(){
         if(this.dataToReceiveFromServer != null) {
-            addMessage(this.userName, this.dataToReceiveFromServer.getData());
+            addMessage(dataToReceiveFromServer.getUserName(), this.dataToReceiveFromServer.getData());
             System.out.println(this.dataToReceiveFromServer.getData());
 
         }else
