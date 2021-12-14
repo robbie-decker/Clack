@@ -29,7 +29,7 @@ public class ClientSideServerListener implements Runnable{
         while(!this.client.getCloseConnection()){
             this.client.receiveData();
             this.client.printData();
+           // this.client.listOfUsers();
         }
-
     }
 }

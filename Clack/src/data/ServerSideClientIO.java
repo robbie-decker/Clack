@@ -87,11 +87,11 @@ public class ServerSideClientIO implements Runnable{
         try{
             this.dataToReceiveFromClient = (ClackData)inFromClient.readObject();
             System.out.println("Data from client: " + this.dataToReceiveFromClient.getData());
-            if(this.dataToReceiveFromClient.getData().equals("DONE")) {
+            if(this.dataToReceiveFromClient.getType() == 1) {
                 this.server.remove(this);
                 this.closeConnection = true;
             }
-            if(this.dataToReceiveFromClient.getData().equals("LISTUSERS")){
+            if(this.dataToReceiveFromClient.getType()==0){
                 this.server.listUsers(this);
             }
         }catch (IOException ioe){System.err.println("Error reading data from client");

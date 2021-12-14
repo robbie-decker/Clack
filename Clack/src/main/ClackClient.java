@@ -25,6 +25,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.xml.soap.Text;
+
 
 /**
  * A class that represents a client user.
@@ -50,8 +52,7 @@ public class ClackClient extends Application {
     private TextField userInput = new TextField();
     private ScrollPane messages = new ScrollPane();
     private VBox messagesInner = new VBox();
-    //private VBox displayUsers = new VBox();
-    private TextField displayUsers = new TextField();
+    private TextArea displayUsers = new TextArea();
     private final Button ISDONE = new Button("Exit");
     private ImageView fileImage = new ImageView(new Image("/main/img/file.png", 50, 50, true, true));
     private ImageView media1Image = new ImageView(new Image("/main/img/file.png", 50, 50, true, true));
@@ -100,7 +101,8 @@ public class ClackClient extends Application {
                         client = new ClackClient(username, m[0], Integer.parseInt(m[1]));
                     } else client = new ClackClient(username, m[0]);
                 } else client = new ClackClient(username);
-                launch(args);
+             //   client.start(new Stage());
+                 launch(args);
             //} catch (IOException ioe) {
               //  System.err.println(ioe.getMessage());
             } catch (NumberFormatException nfe) {
@@ -209,7 +211,6 @@ public class ClackClient extends Application {
         displayUsers.setMinWidth(100);
         displayUsers.setMaxWidth(100);
         displayUsers.setStyle("-fx-background-color:red");
-       //  listOfUsers();
 
         this.closeConnection = false;
         try {
@@ -219,7 +220,8 @@ public class ClackClient extends Application {
             this.inFromStd = new Scanner(System.in);
             ClientSideServerListener listener = new ClientSideServerListener(this);
             Thread current = new Thread(listener);
-              current.start();
+            current.start();
+
 
             ISDONE.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -237,12 +239,18 @@ public class ClackClient extends Application {
                 public void handle(Event event) {
                     TextInputDialog a = new TextInputDialog();
                     a.setContentText("Enter File Name");
-                    a.show();
+                    a.showAndWait();
                     a.getEditor().getText();
                     dataToSendToServer = new FileClackData(userName, a.getEditor().getText(), ClackData.CONSTANT_SENDFILE);
-
+                    try {
+                        ((FileClackData) dataToSendToServer).readFileContents();
+                        String s = (dataToSendToServer).getData();
+                        messagesInner.getChildren().add(new TextArea("this is a test" + s));
+                    }catch(FileNotFoundException fe){System.err.println("File not found");
+                    }catch(IOException ioe){}
                 }
             });
+
 
 //            this.inFromStd.close();
 //            this.outToServer.close();
@@ -321,14 +329,13 @@ public class ClackClient extends Application {
         try{
            // String input = this.inFromStd.nextLine();
             String input = userInput.getText();
-//            if(input.equals("DONE")){
-//                this.dataToSendToServer = new MessageClackData(this.userName, input, ClackData.CONSTANT_LOGOUT);
-//                this.closeConnection = true;
-//                Platform.exit();
-//            }
-// else
+            if(input.equals("DONE")){
+                this.dataToSendToServer = new MessageClackData(this.userName, input, ClackData.CONSTANT_LOGOUT);
+                this.closeConnection = true;
+                Platform.exit();
+            }
+ else
                 if(input.contains("SENDFILE")){
-                // TODO get filename use regex
                 String filename = input.replace("SENDFILE", "").replace(" ", "");
                 try{   
                     this.dataToSendToServer = new FileClackData(this.userName, filename, ClackData.CONSTANT_SENDFILE);
@@ -363,7 +370,6 @@ public class ClackClient extends Application {
     public void receiveData(){
        try {
         this.dataToReceiveFromServer =  (ClackData)inFromServer.readObject();
-
         } catch (IOException ioe){System.err.println("Error writing data to server.");
         } catch (ClassNotFoundException cnfe){System.err.println("Class not found");}
     }
@@ -372,8 +378,13 @@ public class ClackClient extends Application {
      */
     public void printData(){
         if(this.dataToReceiveFromServer != null) {
+            if(this.dataToReceiveFromServer.getType() == 2)
             addMessage(dataToReceiveFromServer.getUserName(), this.dataToReceiveFromServer.getData());
-            System.out.println(this.dataToReceiveFromServer.getData());
+            if(this.dataToReceiveFromServer.getType() == 3)
+            addFileContents(dataToReceiveFromServer.getUserName(), this.dataToReceiveFromServer.getData());
+
+
+            // System.out.println(this.dataToReceiveFromServer.getData());
 
         }else
             System.out.println("Data from server is null");
@@ -388,16 +399,25 @@ public class ClackClient extends Application {
         });
     }
 
+    private void addFileContents(String userName, String file){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                TextArea fileContents = new TextArea(userName + ": " + file);
+                fileContents.maxWidth(300);
+                messagesInner.getChildren().add(fileContents);
+            }
+        });
+    }
+
     public void listOfUsers(){
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                     try {
                         outToServer.writeObject(new MessageClackData(userName, "LISTUSERS", 0));
-                        String s;
-                    //    receiveData();
-                        s = dataToReceiveFromServer.getData();
-                        displayUsers.setText(s);
+                        receiveData();
+                        displayUsers.setText( dataToReceiveFromServer.getData());
                     }catch (IOException ioe){ ioe.getMessage();}
                         //catch(InterruptedException ie){ ie.getMessage();}
                 }
@@ -405,11 +425,15 @@ public class ClackClient extends Application {
     }
 
 
-
+    /***
+     * function that exits a program
+     */
 
     private void exit(){
                 this.dataToSendToServer = new MessageClackData(this.userName, (String)"DONE", ClackData.CONSTANT_LOGOUT);
+                this.sendData();
                 this.closeConnection = true;
+
         try {
                      this.inFromStd.close();
                      this.outToServer.close();
