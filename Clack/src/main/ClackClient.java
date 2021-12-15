@@ -81,6 +81,7 @@ public class ClackClient extends Application {
      */
     public static void main(String[] args) {
                 launch(args);
+
     }
 //
 
@@ -252,17 +253,17 @@ public class ClackClient extends Application {
             });
 
 
-//            this.inFromStd.close();
-//            this.outToServer.close();
-//            this.inFromServer.close();
+//
         } catch (IOException ioe){ System.err.println("Issue with IO.");
         }
         sendButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    readClientData();
-                    sendData();
+                    if(!userInput.getText().isEmpty()) {
+                        readClientData();
+                        sendData();
+                    }
                 }catch(IOException ioe) {
                     System.err.println("issue with IO");
                      }
@@ -442,6 +443,7 @@ public class ClackClient extends Application {
                      this.inFromServer.close();
                  }catch(IOException ioe){System.err.println("Issue with IO");}
                  Platform.exit();
+
     }
 
 
