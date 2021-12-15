@@ -143,8 +143,8 @@ public class ClackServer {
                 users = serverSideClientIOList.get(i).getDataFromClient().getUserName() + "\n" + users;
             }
         }
-        clientIO.setDataToSendToClient(new MessageClackData("anon", users, 0));
-        clientIO.sendData();
+       // clientIO.setDataToSendToClient(new MessageClackData("anon", users, 0));
+        broadcast(new MessageClackData("anon", users, 0));
     }
 
     /**

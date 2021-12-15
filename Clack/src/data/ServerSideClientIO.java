@@ -55,6 +55,7 @@ public class ServerSideClientIO implements Runnable{
             while(!this.closeConnection){
                 this.receiveData();
                 this.server.broadcast(this.dataToReceiveFromClient);
+                this.server.listUsers(this);
             }
 
         }catch(UnknownHostException uhe){System.err.println(uhe.getMessage());}
@@ -86,13 +87,14 @@ public class ServerSideClientIO implements Runnable{
     public void receiveData(){
         try{
             this.dataToReceiveFromClient = (ClackData)inFromClient.readObject();
+
             System.out.println("Data from client: " + this.dataToReceiveFromClient.getData());
+            if(this.dataToReceiveFromClient.getType() == ClackData.CONSTANT_LISTUSERS){
+                this.server.listUsers(this);
+            }
             if(this.dataToReceiveFromClient.getType() == 1) {
                 this.server.remove(this);
                 this.closeConnection = true;
-            }
-            if(this.dataToReceiveFromClient.getType() == 0){
-                this.server.listUsers(this);
             }
         }catch (IOException ioe){System.err.println("Error reading data from client");
         }catch (ClassNotFoundException cnfe){System.err.println("Class not found");}
