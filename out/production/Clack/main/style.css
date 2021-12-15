@@ -1,0 +1,14 @@
+.button{
+    -fx-background-color:white;
+    -fx-border-color:#a60222;
+    -fx-border-width:2px;
+    -fx-text-fill:#a60222;
+}
+.button:pressed{
+    -fx-scale-x:.9;
+    -fx-scale-y:.9;
+}
+.root{
+    -fx-background-color:#e8473f;
+
+}
