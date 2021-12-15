@@ -54,8 +54,8 @@ public class ServerSideClientIO implements Runnable{
             this.outToClient =  new ObjectOutputStream(this.clientSocket.getOutputStream());
             while(!this.closeConnection){
                 this.receiveData();
-                this.server.broadcast(this.dataToReceiveFromClient);
                 this.server.listUsers(this);
+                this.server.broadcast(this.dataToReceiveFromClient);
             }
 
         }catch(UnknownHostException uhe){System.err.println(uhe.getMessage());}

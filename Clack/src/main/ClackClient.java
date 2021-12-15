@@ -16,6 +16,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -26,9 +27,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import javax.xml.soap.Text;
@@ -196,7 +200,7 @@ public class ClackClient extends Application {
         sendButton.setMinWidth(60);
 
 
-        AnchorPane.setTopAnchor(ISDONE, 25.0);
+        AnchorPane.setTopAnchor(ISDONE, 20.0);
         AnchorPane.setRightAnchor(ISDONE, 20.0);
 
          AnchorPane.setLeftAnchor(fileImage, 50.0);
@@ -215,9 +219,8 @@ public class ClackClient extends Application {
         AnchorPane.setTopAnchor(displayUsers, 55.0);
         displayUsers.setMinHeight(200);
         displayUsers.setMaxHeight(200);
-        displayUsers.setMinWidth(100);
-        displayUsers.setMaxWidth(100);
-        displayUsers.setStyle("-fx-background-color:red");
+        displayUsers.setMinWidth(130);
+        displayUsers.setMaxWidth(130);
 
         this.closeConnection = false;
         try {
@@ -234,12 +237,13 @@ public class ClackClient extends Application {
             ISDONE.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    exit();
+                    stop();
                     try {
                         serverConnect.close();
                     } catch (IOException ioe) {
                         System.err.println("Issue with IO");
                     }
+
                 }
             });
             fileImage.setOnMouseClicked(new EventHandler() {
@@ -384,7 +388,7 @@ public class ClackClient extends Application {
     public void receiveData(){
        try {
         this.dataToReceiveFromServer =  (ClackData)inFromServer.readObject();
-        } catch (IOException ioe){System.err.println("Error writing data to server.");
+        } catch (IOException ioe){System.err.println("Error recieving data from server.");
         } catch (ClassNotFoundException cnfe){System.err.println("Class not found");}
     }
     /**
@@ -416,6 +420,8 @@ public class ClackClient extends Application {
                 l.setMaxWidth(270);
                 l.setTextFill(Color.web("#a60222"));
                 l.setWrapText(true);
+                l.setAlignment(Pos.BASELINE_RIGHT);
+                l.setMinWidth(270);
                 messagesInner.getChildren().add(l);
             }
         });
@@ -429,17 +435,22 @@ public class ClackClient extends Application {
     private void addFileContents(String userName, String file){
         Platform.runLater(new Runnable() {
             @Override
-            public void run() {
-                Label fileContents = new Label(userName + ": " + file);
+            public void run() {                Label fileContents = new Label(file);
                 fileContents.setStyle(" -fx-border-color:#a60222; -fx-border-width:1px;");
                 fileContents.setPrefWidth(270);
                 fileContents.setWrapText(true);
-                fileContents.setTextFill(Color.web("#a60222"));
+                fileContents.setTextFill(Color.web("#2e2c27"));
                 fileContents.setPadding(new Insets(0, 5, 0, 5));
+                fileContents.setStyle("-fx-background-color:white;");
                 messagesInner.getChildren().add(fileContents);
             }
         });
     }
+
+    /**
+     * function that updates the list of users
+     * @param s a string representing the entire list of users.
+     */
     public void updateUsers(String s ){
         Platform.runLater(new Runnable() {
             @Override
@@ -449,27 +460,31 @@ public class ClackClient extends Application {
         });
     }
 
-    public void listOfUsers(){
-        dataToSendToServer = new MessageClackData(userName, "LISTUSERS", ClackData.CONSTANT_LISTUSERS);
-        sendData();
-    }
 
     /**
      * function that exits a Client
      */
 
     private void exit(){
-                this.dataToSendToServer = new MessageClackData(this.userName, (String)"DONE", ClackData.CONSTANT_LOGOUT);
-                this.sendData();
-                this.closeConnection = true;
+
+        this.dataToSendToServer = new MessageClackData(this.userName, (String)"DONE", ClackData.CONSTANT_LOGOUT);
+        this.sendData();
 
         try {
-                     this.inFromStd.close();
-                     this.outToServer.close();
-                     this.inFromServer.close();
-                 }catch(IOException ioe){System.err.println("Issue with IO");}
-                 Platform.exit();
+                  this.serverConnect.close();
 
+            this.inFromStd.close();
+
+            this.outToServer.close();
+            this.closeConnection = true;
+
+            this.inFromServer.close();
+
+        }catch(IOException ioe){System.err.println("Issue with IO");}
+                 Platform.exit();
+    }
+    public void stop(){
+        this.exit();
     }
 
 

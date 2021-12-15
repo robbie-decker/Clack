@@ -10,5 +10,18 @@
 }
 .root{
     -fx-background-color:#e8473f;
+}
+.label{
+    -fx-background-color:white;
+        -fx-padding:2px;
+        -fx-text-alignment:left;
+}
+.text-area{
+    -fx-background-color:#a60222;
+    -fx-text-fill:white;
+    -fx-control-inner-background:#a60222;
+}
+.text-field:hover{
+    -fx-border-color:#a60222;
 
 }
