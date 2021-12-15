@@ -137,7 +137,7 @@ public class ClackServer {
         String users = "";
         for(int i = 0; i < serverSideClientIOList.size(); i++){
             if(serverSideClientIOList.get(i).getDataFromClient() == null){
-                users = users + ", Unknown";
+                users = users + "\nUnknown";
             }
             else{
                 users = serverSideClientIOList.get(i).getDataFromClient().getUserName() + "\n" + users;

@@ -91,7 +91,7 @@ public class ServerSideClientIO implements Runnable{
                 this.server.remove(this);
                 this.closeConnection = true;
             }
-            if(this.dataToReceiveFromClient.getType()==0){
+            if(this.dataToReceiveFromClient.getType() == 0){
                 this.server.listUsers(this);
             }
         }catch (IOException ioe){System.err.println("Error reading data from client");
